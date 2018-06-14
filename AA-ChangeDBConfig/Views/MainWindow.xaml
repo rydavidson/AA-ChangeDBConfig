@@ -1,0 +1,19 @@
+﻿<Window x:Name="Main" x:Class="AA_ChangeDBConfig.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AA_ChangeDBConfig"
+        mc:Ignorable="d"
+        Title="Change DB Config" Height="450" Width="400" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" MinWidth="400" MinHeight="450">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="282,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+        <TextBox x:Name="dbserverTextbox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" Margin="168,54,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,50,0,0" Width="127"/>
+
+    </Grid>
+</Window>
