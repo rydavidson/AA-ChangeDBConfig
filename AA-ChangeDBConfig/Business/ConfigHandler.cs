@@ -18,7 +18,7 @@ namespace AA_ChangeDBConfig.Business
 
         public ConfigHandler(string _pathToConfigFile)
         {
-            PathToConfigFile = _pathToConfigFile;
+            PathToConfigFile = _pathToConfigFile.Replace("\"","");
         }
 
         public Dictionary<string, string> GetConfig(string component)
@@ -83,6 +83,39 @@ namespace AA_ChangeDBConfig.Business
                 logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, e.Message, e.StackTrace));
             }
             return "";
+        }
+
+        public void WriteValueToConfig(string key, string newValue)
+        {
+            if ((key == "av.db.host" || key == "jetspeed.db.host") && newValue.Contains(":"))
+            {
+                logger.LogTrace("Entering port strip logic");
+                string port = newValue.Substring(newValue.IndexOf(":") + 1, newValue.Length - newValue.IndexOf(":") - 1);
+                logger.LogToUI("New port: " + port);
+                switch (key)
+                {
+                    case "av.db.host":
+                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("av.db.port", port);
+                        break;
+                    case "jetspeed.db.host":
+                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("jetspeed.db.port", port);
+                        break;
+                    default:
+                        break;
+                }
+                newValue.Remove(newValue.IndexOf(":"));
+            }
+
+            string content = File.ReadAllText(PathToConfigFile, Encoding.Default);
+            int indexOfKey = content.IndexOf(key);
+            int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey);
+            int indexOfEquals = content.IndexOf("=", indexOfKey);
+            string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals));
+            string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey));
+            string newConfigLine = oldConfigLine.Replace(oldValue, newValue);
+            string newFile = content.Replace(oldConfigLine, newConfigLine);
+            File.WriteAllText(PathToConfigFile, newFile);
+            logger.LogToUI("Updated " + key + " to " + newConfigLine);
         }
     }
 }

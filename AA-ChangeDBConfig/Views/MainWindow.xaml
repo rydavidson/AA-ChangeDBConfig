@@ -11,7 +11,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="389,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+        <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="389,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile"/>
         <TextBox x:Name="dbServerTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" FontSize="14"/>
         <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,101,0,0" Width="92" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="dbserverTextbox_Copy" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
