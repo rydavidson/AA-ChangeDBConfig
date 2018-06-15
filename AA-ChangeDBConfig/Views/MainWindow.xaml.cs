@@ -16,6 +16,7 @@ namespace AA_ChangeDBConfig
     {
         Logger logger = new Logger("UI.log");
         Dictionary<string, string> instancesWithVersions = new Dictionary<string, string>();
+        string loadedConfig = "";
 
         public MainWindow()
         {
@@ -109,9 +110,15 @@ namespace AA_ChangeDBConfig
 
             if(getPropFile.ShowDialog() == true)
             {
-                ConfigHandler config = new ConfigHandler(getPropFile.FileName);
+                loadedConfig = getPropFile.FileName;
+                ConfigHandler config = new ConfigHandler(loadedConfig);
                 dbServerTextBox.Text = config.GetValueFromConfig("av.db.host");
             }
+        }
+        private void WriteConfigToFile(object sender, RoutedEventArgs e)
+        {
+            ConfigHandler config = new ConfigHandler(loadedConfig);
+            config.WriteValueToConfig("av.db.host", dbServerTextBox.Text);
         }
     }
 }
