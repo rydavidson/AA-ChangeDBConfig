@@ -37,7 +37,7 @@ namespace AA_ChangeDBConfig.Business
             return configPairs;
         }
 
-        private string GetValueFromConfig(string key) // get a config value from a given key
+        public string GetValueFromConfig(string key) // get a config value from a given key
         {
             try
             {
@@ -45,7 +45,7 @@ namespace AA_ChangeDBConfig.Business
                 int indexOfKey = content.IndexOf(key);
                 int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey);
                 int indexOfEquals = content.IndexOf("=", indexOfKey);
-                string value = content.Substring(indexOfEquals, (indexEndOfValue - indexOfEquals) - 1);
+                string value = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals) - 1);
                 return value;
             }
             catch (ArgumentNullException anex)
