@@ -33,7 +33,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_Open Config File"/>
                 <Separator/>
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
         </Menu>
         <ComboBox x:Name="versionsComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox"/>

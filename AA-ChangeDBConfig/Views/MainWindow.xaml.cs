@@ -95,5 +95,10 @@ namespace AA_ChangeDBConfig
         {
             GlobalConfigs.Instance.CachedInstance = instancesComboBox.SelectedValue.ToString();
         }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }
