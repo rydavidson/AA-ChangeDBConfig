@@ -12,7 +12,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="389,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
-        <TextBox x:Name="dbserverTextbox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" FontSize="14"/>
+        <TextBox x:Name="dbServerTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" FontSize="14"/>
         <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,101,0,0" Width="92" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="dbserverTextbox_Copy" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="avdbLabel" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,136,0,0" Width="92" HorizontalContentAlignment="Center"/>
@@ -28,7 +28,7 @@
         <Label x:Name="jetspeedUserLabel" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,167,0,0" Width="132" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="dbserverTextbox_Copy5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="jetspeedPassLabel" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,198,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <Button x:Name="loadConfigButton" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="389,324,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+        <Button x:Name="loadConfigButton" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="389,324,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfigFromFile"/>
         <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open Config File"/>

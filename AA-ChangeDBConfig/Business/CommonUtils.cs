@@ -136,7 +136,8 @@ namespace AA_ChangeDBConfig.Business
                     logger.LogError("Error while reading install directory: " + ex.Message + ex.StackTrace);
                 }
             }
-            logger.LogToUI("InstallDir: " + installDir);
+            if(installDir != "")
+                logger.LogToUI("InstallDir: " + installDir);
             return installDir;
         }
         public static List<string> GetAAInstalledComponents()

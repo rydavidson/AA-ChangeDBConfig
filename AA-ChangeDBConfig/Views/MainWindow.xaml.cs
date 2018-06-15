@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using AA_ChangeDBConfig.Business;
+using Microsoft.Win32;
 
 namespace AA_ChangeDBConfig
 {
@@ -94,6 +95,19 @@ namespace AA_ChangeDBConfig
         private void SelectedInstanceChanged(object sender, SelectionChangedEventArgs e)
         {
             GlobalConfigs.Instance.CachedInstance = instancesComboBox.SelectedValue.ToString();
+        }
+
+        private void LoadConfigFromFile(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog getPropFile = new OpenFileDialog();
+            getPropFile.InitialDirectory = CommonUtils.GetAAInstallDir();
+            getPropFile.Filter = "Properties files (*.properties)|*.properties";
+
+            if(getPropFile.ShowDialog() == true)
+            {
+                ConfigHandler config = new ConfigHandler(getPropFile.FileName);
+                dbServerTextBox.Text = config.GetValueFromConfig("av.db.host");
+            }
         }
     }
 }
