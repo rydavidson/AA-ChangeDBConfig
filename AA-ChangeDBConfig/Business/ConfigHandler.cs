@@ -26,18 +26,18 @@ namespace AA_ChangeDBConfig.Business
             Dictionary<string, string> configPairs = new Dictionary<string, string>();
             Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths();
 
-            foreach(KeyValuePair<string, string> configFile in configFiles)
+            foreach (KeyValuePair<string, string> configFile in configFiles)
             {
-                if(configFile.Key == component && configFile.Value == PathToConfigFile)
+                if (configFile.Key == component && configFile.Value == PathToConfigFile)
                 {
-                    
+
                 }
             }
 
             return configPairs;
         }
 
-        private string GetValueFromConfig(string key) // get a config value from a given key
+        public string GetValueFromConfig(string key) // get a config value from a given key
         {
             try
             {
@@ -45,7 +45,21 @@ namespace AA_ChangeDBConfig.Business
                 int indexOfKey = content.IndexOf(key);
                 int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey);
                 int indexOfEquals = content.IndexOf("=", indexOfKey);
-                string value = content.Substring(indexOfEquals, (indexEndOfValue - indexOfEquals) - 1);
+                string value = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals) - 1);
+
+
+                switch (key)
+                {
+                    case "av.db.host":
+                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("av.db.port");
+                        break;
+                    case "jetspeed.db.host":
+                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("jetspeed.db.port");
+                        break;
+                    default:
+                        break;
+                }
+
                 return value;
             }
             catch (ArgumentNullException anex)
@@ -64,7 +78,7 @@ namespace AA_ChangeDBConfig.Business
             {
                 logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, uaex.Message, uaex.StackTrace));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, e.Message, e.StackTrace));
             }
