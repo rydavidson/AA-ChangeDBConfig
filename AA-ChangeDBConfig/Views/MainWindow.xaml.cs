@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AA_ChangeDBConfig.Business;
 
 namespace AA_ChangeDBConfig
 {
@@ -23,6 +24,29 @@ namespace AA_ChangeDBConfig
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += RunOnLoad;
+        }
+
+        private void RunOnLoad(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                foreach (string version in CommonUtils.GetAAVersions())
+                {
+                    versionsComboBox.Items.Add(version);
+                }
+            }
+            catch (Exception ex)
+            {
+                StringBuilder message = new StringBuilder();
+                message.AppendLine("Unable to detect installed AA versions. If an error was encountered it will be shown below.");
+                message.AppendLine();
+                message.AppendLine(ex.Message);
+                message.AppendLine(ex.StackTrace);
+                MessageBox.Show(message.ToString());
+
+            }
+
         }
     }
 }
