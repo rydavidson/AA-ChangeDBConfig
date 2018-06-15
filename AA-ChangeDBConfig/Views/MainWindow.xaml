@@ -22,7 +22,7 @@
         <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,198,0,0" Width="92" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="dbserverTextbox_Copy3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,136,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <ComboBox x:Name="instancesComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="instancesComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged"/>
         <Label x:Name="selectInstanceLabel" Content="Select Instance" Grid.Column="1" HorizontalAlignment="Left" Margin="135,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="dbserverTextbox_Copy4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="jetspeedUserLabel" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,167,0,0" Width="132" HorizontalContentAlignment="Center"/>
@@ -36,7 +36,7 @@
                 <MenuItem Header="_Exit"/>
             </MenuItem>
         </Menu>
-        <ComboBox x:Name="versionsComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="versionsComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox"/>
         <Label x:Name="selectVersionLabe" Content="Select Version" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="logBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="159" Margin="11,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="354" ScrollViewer.CanContentScroll="True"/>
     </Grid>

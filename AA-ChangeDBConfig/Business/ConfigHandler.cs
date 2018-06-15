@@ -14,24 +14,30 @@ namespace AA_ChangeDBConfig.Business
         // ConfigHandler exposes methods to deal with common functions needed for config files, such as retrieving and updating values
 
         private string PathToConfigFile { get; set; }
-        private bool isDebug = false;
+        private Logger logger = new Logger("ConfigHandler.log");
 
         public ConfigHandler(string _pathToConfigFile)
         {
             PathToConfigFile = _pathToConfigFile;
         }
 
-        public Dictionary<string, string> GetConfig()
+        public Dictionary<string, string> GetConfig(string component)
         {
             Dictionary<string, string> configPairs = new Dictionary<string, string>();
+            Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths();
 
-
+            foreach(KeyValuePair<string, string> configFile in configFiles)
+            {
+                if(configFile.Key == component && configFile.Value == PathToConfigFile)
+                {
+                    
+                }
+            }
 
             return configPairs;
-
         }
 
-        private string GetKeyValueFromConfig(string key)
+        private string GetValueFromConfig(string key) // get a config value from a given key
         {
             try
             {
@@ -44,23 +50,23 @@ namespace AA_ChangeDBConfig.Business
             }
             catch (ArgumentNullException anex)
             {
-                if(isDebug)
-                MessageBox.Show(anex.Message + " | " + anex.StackTrace);
+                logger.LogError(string.Format("ArgumentNullException getting config of {0}, error: {1} {2}", key, anex.Message, anex.StackTrace));
             }
-            catch(DirectoryNotFoundException dex)
+            catch (DirectoryNotFoundException dex)
             {
-                if (isDebug)
-                    MessageBox.Show(dex.Message + " | " + dex.StackTrace);
+                logger.LogError(string.Format("Directory not found, error: {0} {1}", dex.Message, dex.StackTrace));
             }
             catch (SecurityException sex) // the name fits, not my fault
             {
-                if (isDebug)
-                    MessageBox.Show(sex.Message + " | " + sex.StackTrace);
+                logger.LogError(string.Format("SecurityException getting config of {0}, error: {1} {2}", key, sex.Message, sex.StackTrace));
             }
-            catch(UnauthorizedAccessException uaex)
+            catch (UnauthorizedAccessException uaex)
             {
-                if (isDebug)
-                    MessageBox.Show(uaex.Message + " | " + uaex.StackTrace);
+                logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, uaex.Message, uaex.StackTrace));
+            }
+            catch(Exception e)
+            {
+                logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, e.Message, e.StackTrace));
             }
             return "";
         }

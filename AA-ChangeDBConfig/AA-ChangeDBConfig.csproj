@@ -59,6 +59,7 @@
     </Page>
     <Compile Include="Business\CommonUtils.cs" />
     <Compile Include="Business\ConfigHandler.cs" />
+    <Compile Include="Business\GlobalConfigs.cs" />
     <Compile Include="Business\Logger.cs" />
     <Compile Include="Models\MSSQLConfig.cs" />
     <Compile Include="Models\OracleConfig.cs" />
