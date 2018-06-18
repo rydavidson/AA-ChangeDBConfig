@@ -15,12 +15,12 @@ namespace AA_ChangeDBConfig.Business
 
         public bool IsLogDebugEnabled { get; set; }
         public bool IsLogTraceEnabled { get; set; }
-        public string CachedVersion { get; set; }
-        public string CachedInstance { get; set; }
-        public string CachedAAInstallDir { get; set; }
-        public string CachedPathToConfigFile { get; set; }
-        public Dictionary<string, string> ConfigKeys { get; set; }
-        public MSSQLConfig CachedMSSQLConfig { get; set; }
+        public string AAVersion { get; set; }
+        public string AAInstance { get; set; }
+        public string AAInstallDir { get; set; }
+        public string PathToConfigFile { get; set; }
+        public List<string> InstalledComponent { get; set; }
+        public MSSQLConfig CurrentMSSQLConfig { get; set; }
 
         GlobalConfigs()
         {

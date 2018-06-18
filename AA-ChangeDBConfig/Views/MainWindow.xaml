@@ -5,39 +5,204 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AA_ChangeDBConfig"
         mc:Ignorable="d"
-        Title="Change DB Config" Height="450" Width="510" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" MinWidth="510" MinHeight="450">
+        Title="Change DB Config" Height="511.97" Width="551.949" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" MinWidth="510" MinHeight="450">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="389,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile"/>
-        <TextBox x:Name="dbServerTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" FontSize="14"/>
-        <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,101,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="avDBTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Label x:Name="avdbLabel" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,136,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="avDBUserTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,167,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,198,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="jetspeedDBTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,136,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <ComboBox x:Name="instancesComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged"/>
-        <Label x:Name="selectInstanceLabel" Content="Select Instance" Grid.Column="1" HorizontalAlignment="Left" Margin="135,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="jetspeedUserTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
-        <Label x:Name="jetspeedUserLabel" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,167,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <Label x:Name="jetspeedPassLabel" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,198,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <Button x:Name="loadConfigButton" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="389,324,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfigFromFile"/>
         <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Config File" Click="LoadConfigFromFile"/>
+                <MenuItem Header="_Open Config File" Click="LoadConfig"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
         </Menu>
-        <ComboBox x:Name="versionsComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox"/>
-        <Label x:Name="selectVersionLabe" Content="Select Version" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="logBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="159" Margin="11,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="354" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto"/>
-        <PasswordBox x:Name="avDBPasswordTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="108,198,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
-        <PasswordBox x:Name="jetspeedPasswordTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="372,198,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+        <TabControl x:Name="mainTabMenu" HorizontalAlignment="Left" Height="461" Margin="0,20,0,0" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="2" SelectionChanged="mainTabMenu_SelectionChanged">
+            <TabItem x:Name="av_adsTab" Header="av.ads" Margin="0" RenderTransformOrigin="-1.114,0.416" Visibility="Collapsed" IsEnabled="False">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="197*"/>
+                        <RowDefinition Height="199*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton3" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="369,97,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" Grid.Row="1"/>
+                    <TextBox x:Name="dbServerTextBox3" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBTextBox3" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="avdbLabel3" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox3" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedDBTextBox3" HorizontalAlignment="Left" Height="26" Margin="407,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,122,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox3" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectInstanceLabel3" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedUserTextBox3" HorizontalAlignment="Left" Height="26" Margin="407,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="jetspeedUserLabel3" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,153,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label x:Name="jetspeedPassLabel3" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,184,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Button x:Name="loadConfigButton3" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="369,52,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Grid.Row="1"/>
+                    <ComboBox x:Name="versionsComboBox3" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectVersionLabe3" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="logBox3" HorizontalAlignment="Left" Height="143" Margin="4,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="343" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox3" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                    <PasswordBox x:Name="jetspeedPasswordTextBox3" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="av_arwTab" Header="av.arw" Margin="0" Visibility="Hidden" IsEnabled="False" Height="0" Width="0">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="197*"/>
+                        <RowDefinition Height="199*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton2" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="369,97,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" Grid.Row="1"/>
+                    <TextBox x:Name="dbServerTextBox2" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBTextBox2" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="avdbLabel2" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox2" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedDBTextBox2" HorizontalAlignment="Left" Height="26" Margin="407,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,122,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox2" HorizontalAlignment="Left" Margin="282,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectInstanceLabel2" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedUserTextBox2" HorizontalAlignment="Left" Height="26" Margin="407,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="jetspeedUserLabel2" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,153,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label x:Name="jetspeedPassLabel2" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,184,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Button x:Name="loadConfigButton2" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="369,52,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Grid.Row="1"/>
+                    <ComboBox x:Name="versionsComboBox2" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectVersionLabe2" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="logBox2" HorizontalAlignment="Left" Height="143" Margin="4,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="343" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox2" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                    <PasswordBox x:Name="jetspeedPasswordTextBox2" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="av_bizTab" Header="av.biz" Margin="0" IsSelected="True">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton_biz" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="427,357,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" IsEnabled="False"/>
+                    <TextBox x:Name="dbServerTextBox_biz" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBTextBox_biz" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="avdbLabel" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox_biz" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedDBTextBox_biz" HorizontalAlignment="Left" Height="26" Margin="407,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,122,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox_biz" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectInstanceLabel_biz" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedUserTextBox_biz" HorizontalAlignment="Left" Height="26" Margin="407,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="jetspeedUserLabel" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,153,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label x:Name="jetspeedPassLabel" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,184,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Button x:Name="loadConfigButton_biz" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="427,245,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" IsEnabled="False"/>
+                    <ComboBox x:Name="versionsComboBox_biz" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectVersionLabel_biz" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="logBox_biz" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox_biz" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                    <PasswordBox x:Name="jetspeedPasswordTextBox_biz" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                    <Button x:Name="changeDBConfigTypeButton" Content="Change DB Type" Grid.Column="1" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Visibility="Hidden"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="av_cfmxTab" Header="av.cfmx" Margin="0">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton_cfmx" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="427,357,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" IsEnabled="False"/>
+                    <TextBox x:Name="dbServer_cfmx" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBTextBox_cfmx" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="avdbLabel1" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox_cfmx" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox_cfmx" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectInstanceLabel1" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Button x:Name="loadConfigButton_cfmx" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="427,245,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" IsEnabled="False"/>
+                    <ComboBox x:Name="versionsComboBox_cfmx" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectVersionLabe1" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="logBox_cfmx" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox_cfmx" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" Visibility="Hidden" IsEnabled="False" Height="0" Width="0">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="197*"/>
+                        <RowDefinition Height="199*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton4" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="369,97,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" Grid.Row="1"/>
+                    <TextBox x:Name="dbServerTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="avdbLabel4" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedDBTextBox4" HorizontalAlignment="Left" Height="26" Margin="407,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,122,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox4" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectInstanceLabel4" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="jetspeedUserTextBox4" HorizontalAlignment="Left" Height="26" Margin="407,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <Label x:Name="jetspeedUserLabel4" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,153,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Label x:Name="jetspeedPassLabel4" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,184,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <Button x:Name="loadConfigButton4" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="369,52,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Grid.Row="1"/>
+                    <ComboBox x:Name="versionsComboBox4" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <Label x:Name="selectVersionLabe4" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
+                    <TextBox x:Name="logBox4" HorizontalAlignment="Left" Height="143" Margin="4,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="343" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox4" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                    <PasswordBox x:Name="jetspeedPasswordTextBox4" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="av_webTab" Header="av.web" Margin="0" IsSelected="False">
+                <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="119.801"/>
+                        <ColumnDefinition Width="421.199"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="commitButton_web" Content="Commit Changes" HorizontalAlignment="Left" Margin="307.199,357,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" Grid.Column="1" IsEnabled="False"/>
+                    <TextBox x:Name="dbServerTextBox_web" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.ColumnSpan="2"/>
+                    <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Height="26"/>
+                    <TextBox x:Name="avDBTextBox_web" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.ColumnSpan="2"/>
+                    <Label x:Name="avdbLabel5" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Height="26"/>
+                    <TextBox x:Name="avDBUserTextBox_web" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.ColumnSpan="2"/>
+                    <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Height="26"/>
+                    <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Height="26"/>
+                    <ComboBox x:Name="instancesComboBox_web" HorizontalAlignment="Left" Margin="167.199,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Height="22" Grid.Column="1"/>
+                    <Label x:Name="selectInstanceLabel5" Content="Select Instance" HorizontalAlignment="Left" Margin="167.199,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Height="26" Grid.Column="1"/>
+                    <Button x:Name="loadConfigButton_web" Content="Load Config" HorizontalAlignment="Left" Margin="307.199,245,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Grid.Column="1" IsEnabled="False"/>
+                    <ComboBox x:Name="versionsComboBox_web" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Height="22" Grid.ColumnSpan="2"/>
+                    <Label x:Name="selectVersionLabe5" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Height="26" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="logBox_web" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox_web" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

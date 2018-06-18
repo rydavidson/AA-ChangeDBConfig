@@ -77,17 +77,12 @@ namespace AA_ChangeDBConfig.Business
             return accelaBaseKey;
         }
 
-        private static RegistryKey GetInstanceKeyCached() // use this unless you really need to override the cached values
-        {
-            
-            if(instanceKey != null)
-                return instanceKey;
-
-            return GetInstanceKey(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
-        }
-
         private static RegistryKey GetInstanceKey(string _version, string _instance)
         {
+
+            if (instanceKey != null)
+                return instanceKey;
+
             RegistryKey reg = GetAccelaBaseKey();
 
             try
@@ -122,12 +117,12 @@ namespace AA_ChangeDBConfig.Business
 
         public static string GetAAInstallDir()
         {
-            if(GlobalConfigs.Instance.CachedAAInstallDir != null)
+            if(GlobalConfigs.Instance.AAInstallDir != null)
             {
-                return GlobalConfigs.Instance.CachedAAInstallDir;
+                return GlobalConfigs.Instance.AAInstallDir;
             }
-            string version = GlobalConfigs.Instance.CachedVersion;
-            string instance = GlobalConfigs.Instance.CachedInstance;
+            string version = GlobalConfigs.Instance.AAVersion;
+            string instance = GlobalConfigs.Instance.AAInstance;
             RegistryKey reg = GetAccelaBaseKey();
             string installDir = "";
             if (reg != null && version != null && instance != null)
@@ -142,21 +137,22 @@ namespace AA_ChangeDBConfig.Business
                     logger.LogError("Error while reading install directory: " + ex.Message + ex.StackTrace);
                 }
             }
-            if(installDir != "")
-                logger.LogToUI("InstallDir: " + installDir);
+            if (installDir != "")
+                GlobalConfigs.Instance.AAInstallDir = installDir;
             return installDir;
         }
-        public static List<string> GetAAInstalledComponents()
+        public static List<string> GetAAInstalledComponents(string _version, string _instance)
         {
             RegistryKey reg = GetAccelaBaseKey();
-            string components = GetInstanceKeyCached().GetValue("InstallComponents").ToString();
-            logger.LogToUI("Installed Components: " + components.Split(',').ToString());
+            string components = GetInstanceKey(_version, _instance).GetValue("InstallComponents").ToString();
+            List<string> compList = new List<string>();
+            compList
             return new List<string>(components.Split(','));
         }
-        public static Dictionary<string,string> GetAAConfigFilePaths()
+        public static Dictionary<string,string> GetAAConfigFilePaths(string _version, string _instance)
         {
             Dictionary<string, string> paths = new Dictionary<string, string>();
-            List<string> components = GetAAInstalledComponents();
+            List<string> components = GetAAInstalledComponents(_version, _instance);
             string installDir = GetAAInstallDir();
             StringBuilder sb = new StringBuilder();
 

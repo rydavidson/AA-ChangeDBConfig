@@ -19,11 +19,35 @@ namespace AA_ChangeDBConfig.Business
             logFile = _logFile;
         }
 
-        public void LogToUI(string message)
+        public void LogToUI(string message, string box)
         {            
             sb.AppendLine(message);
             var main = Application.Current.Windows.Cast<Window>().FirstOrDefault(windows => windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
-            main.logBox.Text += sb.ToString();
+            switch (box)
+            {
+                case "logBox_biz":
+                    main.logBox_biz.Text += sb.ToString();
+                    break;
+                case "logBox_cfmx":
+                    main.logBox_cfmx.Text += sb.ToString();
+                    break;
+                case "logBox_web":
+                    main.logBox_web.Text += sb.ToString();
+                    break;
+                default:
+                    break;
+            }
+
+            sb.Clear();
+        }
+
+        public void LogToUI(string message)
+        {
+            sb.AppendLine(message);
+            var main = Application.Current.Windows.Cast<Window>().FirstOrDefault(windows => windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
+            main.logBox_biz.Text += sb.ToString();
+            main.logBox_cfmx.Text += sb.ToString();
+            main.logBox_web.Text += sb.ToString();
             sb.Clear();
         }
 
