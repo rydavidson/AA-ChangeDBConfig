@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace AA_ChangeDBConfig
         Dictionary<string, string> instancesWithVersions = new Dictionary<string, string>();
         string loadedConfig = "";
         MSSQLConfig mssql = new MSSQLConfig();
-
+        TabItem currentTab = new TabItem();
 
         public MainWindow()
         {
@@ -33,13 +34,14 @@ namespace AA_ChangeDBConfig
             GlobalConfigs.Instance.IsLogDebugEnabled = true;
             GlobalConfigs.Instance.IsLogTraceEnabled = true;
             //av_webTab.Visibility = Visibility.Collapsed;
-
-
+            currentTab = mainTabMenu.SelectedItem as TabItem;
             try
             {
                 foreach (string version in CommonUtils.GetAAVersions())
                 {
                     versionsComboBox_biz.Items.Add(version);
+                    versionsComboBox_cfmx.Items.Add(version);
+                    versionsComboBox_web.Items.Add(version);
                     try
                     {
                         foreach (string instance in CommonUtils.GetAAInstancesByVersion(version))
@@ -73,9 +75,9 @@ namespace AA_ChangeDBConfig
         {
             List<string> instances = new List<string>();
 
-            foreach(KeyValuePair<string, string> instanceVersionPair in instancesWithVersions)
+            foreach (KeyValuePair<string, string> instanceVersionPair in instancesWithVersions)
             {
-                if(instanceVersionPair.Value == version)
+                if (instanceVersionPair.Value == version)
                 {
                     instances.Add(instanceVersionPair.Key);
                 }
@@ -85,84 +87,124 @@ namespace AA_ChangeDBConfig
 
         private void PopulateInstanceComboBox(object sender, SelectionChangedEventArgs e)
         {
-            string selectedVersion = versionsComboBox_biz.SelectedValue.ToString();
-            GlobalConfigs.Instance.CachedVersion = selectedVersion;
+            string selectedVersion = "";
+
+            if (e.OriginalSource == versionsComboBox_biz)
+                selectedVersion = versionsComboBox_biz.SelectedValue.ToString();
+            if (e.OriginalSource == versionsComboBox_cfmx)
+                selectedVersion = versionsComboBox_cfmx.SelectedValue.ToString();
+            if (e.OriginalSource == versionsComboBox_web)
+                selectedVersion = versionsComboBox_web.SelectedValue.ToString();
+
+            GlobalConfigs.Instance.AAVersion = selectedVersion;
+
             if (selectedVersion != "")
             {
                 foreach (string instance in LookupInstancesForVersion(selectedVersion))
                 {
-                    instancesComboBox_biz.Items.Add(instance);
+                    if (!instancesComboBox_biz.Items.Contains(instance))
+                        instancesComboBox_biz.Items.Add(instance);
+                    if (!instancesComboBox_cfmx.Items.Contains(instance))
+                        instancesComboBox_cfmx.Items.Add(instance);
+                    if (!instancesComboBox_web.Items.Contains(instance))
+                        instancesComboBox_web.Items.Add(instance);
                 }
             }
         }
 
-
-
         private void LoadConfig(object sender, RoutedEventArgs e)
         {
-            if (GlobalConfigs.Instance.CachedVersion == null || GlobalConfigs.Instance.CachedInstance == null)
+
+            if (GlobalConfigs.Instance.AAVersion == null || GlobalConfigs.Instance.AAInstance == null)
             {
                 MessageBox.Show("You must select a version and instance to work with");
                 return;
             }
             string initialDir = CommonUtils.GetAAInstallDir();
-            Dictionary<string, string> paths = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
+            Dictionary<string, string> paths = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.AAVersion, GlobalConfigs.Instance.AAInstance);
+            mssql.component = currentTab.Header.ToString();
+            //logger.LogToUI(mssql.component);
+            initialDir = paths[mssql.component];
 
-            if (e.OriginalSource == loadConfigButton_biz)
+            if (File.Exists(initialDir))
             {
-                initialDir = paths["av.biz"];
-            }
-            if (e.OriginalSource == loadConfigButton_cfmx)
-            {
-                initialDir = paths["av.cfmx"];
-            }
-            if (e.OriginalSource == loadConfigButton_web)
-            {
-                initialDir = paths["av.web"];
-            }
-            OpenFileDialog getPropFile = new OpenFileDialog();
-            getPropFile.InitialDirectory = initialDir;
-            getPropFile.Filter = "Properties files (*.properties)|*.properties";
+                
+                loadedConfig = initialDir;
+                ConfigHandler config = new ConfigHandler(loadedConfig, mssql.component);
 
-            if(getPropFile.ShowDialog() == true)
-            {
-                loadedConfig = getPropFile.FileName;
-                ConfigHandler config = new ConfigHandler(loadedConfig);
-
-                if(config.GetValueFromConfig("av.db") == "mssql")
+                logger.LogToUI("Loading config direct from detected file: " + loadedConfig, "logBox_" + mssql.component.Remove(0,3));
+                if (config.GetValueFromConfig("av.db") == "mssql")
                 {
                     mssql.serverHostname = config.GetValueFromConfig("av.db.host");
-                    mssql.component = "";
 
                     // av db
                     mssql.avDatabaseName = config.GetValueFromConfig("av.db.sid");
                     mssql.avDatabaseUser = config.GetValueFromConfig("av.db.username");
                     mssql.SetAVDatabasePassword(config.GetValueFromConfig("av.db.password"));
 
-                    // jetspeed db
-                    mssql.jetspeedDatabaseName = config.GetValueFromConfig("av.jetspeed.db.sid");
-                    mssql.jetspeedDatabaseUser = config.GetValueFromConfig("av.jetspeed.db.username");
-                    mssql.SetJetspeedDatabasePassword(config.GetValueFromConfig("av.jetspeed.db.password"));
-
+                    if (mssql.component == "av.biz")
+                    {
+                        // jetspeed db
+                        mssql.jetspeedDatabaseName = config.GetValueFromConfig("av.jetspeed.db.sid");
+                        mssql.jetspeedDatabaseUser = config.GetValueFromConfig("av.jetspeed.db.username");
+                        mssql.SetJetspeedDatabasePassword(config.GetValueFromConfig("av.jetspeed.db.password"));
+                    }
                     UpdateUI(mssql);
                 }
                 else
                 {
                     MessageBox.Show("Unsupported connection type detected: " + config.GetValueFromConfig("av.db"));
-                    logger.LogToUI("Unsupported database connection type");
+                    logger.LogToUI("Unsupported database connection type", mssql.component);
                 }
-
             }
+            else
+            {
+                OpenFileDialog getPropFile = new OpenFileDialog();
+                getPropFile.InitialDirectory = initialDir;
+                getPropFile.Filter = "Properties files (*.properties)|*.properties";
+
+                if (getPropFile.ShowDialog() == true)
+                {
+                    loadedConfig = getPropFile.FileName;
+                    ConfigHandler config = new ConfigHandler(loadedConfig, mssql.component);
+
+                    if (config.GetValueFromConfig("av.db") == "mssql")
+                    {
+                        mssql.serverHostname = config.GetValueFromConfig("av.db.host");
+
+                        // av db
+                        mssql.avDatabaseName = config.GetValueFromConfig("av.db.sid");
+                        mssql.avDatabaseUser = config.GetValueFromConfig("av.db.username");
+                        mssql.SetAVDatabasePassword(config.GetValueFromConfig("av.db.password"));
+
+                        if (mssql.component == "av.biz")
+                        {
+                            // jetspeed db
+                            mssql.jetspeedDatabaseName = config.GetValueFromConfig("av.jetspeed.db.sid");
+                            mssql.jetspeedDatabaseUser = config.GetValueFromConfig("av.jetspeed.db.username");
+                            mssql.SetJetspeedDatabasePassword(config.GetValueFromConfig("av.jetspeed.db.password"));
+                        }
+                        UpdateUI(mssql);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unsupported connection type detected: " + config.GetValueFromConfig("av.db"));
+                        logger.LogToUI("Unsupported database connection type", mssql.component);
+                    }
+
+                }
+            }
+
         }
         private void WriteConfigToFile(object sender, RoutedEventArgs e)
         {
             if (loadedConfig == "" || loadedConfig == null)
             {
-                if (GlobalConfigs.Instance.CachedPathToConfigFile == "" || GlobalConfigs.Instance.CachedPathToConfigFile == null)
+                if (GlobalConfigs.Instance.PathToConfigFile == "" || GlobalConfigs.Instance.PathToConfigFile == null)
                     return;
-                loadedConfig = GlobalConfigs.Instance.CachedPathToConfigFile;
+                loadedConfig = GlobalConfigs.Instance.PathToConfigFile;
             }
-            ConfigHandler config = new ConfigHandler(loadedConfig);
+            ConfigHandler config = new ConfigHandler(loadedConfig, mssql.component);
 
             mssql.serverHostname = dbServerTextBox_biz.Text;
 
@@ -184,26 +226,68 @@ namespace AA_ChangeDBConfig
         public void UpdateUI(MSSQLConfig _mssql)
         {
             dbServerTextBox_biz.Text = _mssql.serverHostname;
+            dbServer_cfmx.Text = _mssql.serverHostname;
 
             // av db
             avDBTextBox_biz.Text = _mssql.avDatabaseName;
             avDBUserTextBox_biz.Text = _mssql.avDatabaseUser;
             avDBPasswordTextBox_biz.Password = _mssql.GetAVDatabasePassword();
+            avDBTextBox_cfmx.Text = _mssql.avDatabaseName;
+            avDBUserTextBox_cfmx.Text = _mssql.avDatabaseUser;
+            avDBPasswordTextBox_cfmx.Password = _mssql.GetAVDatabasePassword();
 
             // jetspeed db
             jetspeedDBTextBox_biz.Text = _mssql.jetspeedDatabaseName;
             jetspeedUserTextBox_biz.Text = _mssql.jetspeedDatabaseUser;
             jetspeedPasswordTextBox_biz.Password = _mssql.GetJetspeedDatabasePassword();
+
+            switch (_mssql.component)
+            {
+                case "av.biz":
+                    commitButton_biz.IsEnabled = true;
+                    break;
+                case "av.cfmx":
+                    commitButton_cfmx.IsEnabled = true;
+                    break;
+                case "av.web":
+                    commitButton_web.IsEnabled = true;
+                    break;
+                default:
+                    logger.LogWarn("Couldn't enable a commit button. There may be an issue. Selected component is: " + mssql.component);
+                    break;
+            }
         }
 
         private void SelectedInstanceChanged(object sender, SelectionChangedEventArgs e)
         {
-            GlobalConfigs.Instance.CachedInstance = instancesComboBox_biz.SelectedValue.ToString();
+
+            if (e.OriginalSource == instancesComboBox_biz)
+            {
+                GlobalConfigs.Instance.AAInstance = instancesComboBox_biz.SelectedValue.ToString();
+                loadConfigButton_biz.IsEnabled = true;
+            }
+            if (e.OriginalSource == instancesComboBox_cfmx)
+            {
+                GlobalConfigs.Instance.AAInstance = instancesComboBox_cfmx.SelectedValue.ToString();
+                loadConfigButton_cfmx.IsEnabled = true;
+            }
+            if (e.OriginalSource == instancesComboBox_web)
+            {
+                GlobalConfigs.Instance.AAInstance = instancesComboBox_web.SelectedValue.ToString();
+                loadConfigButton_web.IsEnabled = true;
+            }
+
         }
 
         private void Exit(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void mainTabMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentTab = mainTabMenu.SelectedItem as TabItem;
+            //logger.LogDebug("Tab changed. Current tab is: " + currentTab.Header.ToString());
         }
     }
 }
