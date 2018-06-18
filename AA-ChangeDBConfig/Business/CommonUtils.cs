@@ -146,8 +146,11 @@ namespace AA_ChangeDBConfig.Business
             RegistryKey reg = GetAccelaBaseKey();
             string components = GetInstanceKey(_version, _instance).GetValue("InstallComponents").ToString();
             List<string> compList = new List<string>();
-            compList
-            return new List<string>(components.Split(','));
+            foreach(string comp in components.Split(','))
+            {
+                compList.Add(comp);
+            }
+            return compList;
         }
         public static Dictionary<string,string> GetAAConfigFilePaths(string _version, string _instance)
         {

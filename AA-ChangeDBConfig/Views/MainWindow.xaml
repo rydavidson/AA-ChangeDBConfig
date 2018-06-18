@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Config File" Click="LoadConfig"/>
+                <MenuItem x:Name="openConfigFileMenuItem" Header="_Open Config File" Click="LoadConfig"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
