@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Security;
 using System.Windows;
+using AA_ChangeDBConfig.Models;
 
 namespace AA_ChangeDBConfig.Business
 {
@@ -18,10 +19,11 @@ namespace AA_ChangeDBConfig.Business
 
         public ConfigHandler(string _pathToConfigFile)
         {
-            PathToConfigFile = _pathToConfigFile.Replace("\"","");
+            //PathToConfigFile = _pathToConfigFile.Replace("\"","");
+            PathToConfigFile = _pathToConfigFile;
         }
 
-        public Dictionary<string, string> GetConfig(string component)
+        private Dictionary<string, string> GetConfig(string component)
         {
             Dictionary<string, string> configPairs = new Dictionary<string, string>();
             Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths();
@@ -37,6 +39,21 @@ namespace AA_ChangeDBConfig.Business
             return configPairs;
         }
 
+        public void WriteMSSQLConfigToFile(MSSQLConfig mssql)
+        {
+            WriteValueToConfig("av.db.host", mssql.serverHostname);
+            WriteValueToConfig("jetspeed.db.host", mssql.serverHostname);
+
+            WriteValueToConfig("av.db.sid", mssql.avDatabaseName);
+            WriteValueToConfig("av.db.username", mssql.avDatabaseUser);
+            WriteValueToConfig("av.db.password", mssql.GetAVDatabasePassword());
+
+            WriteValueToConfig("av.jetspeed.db.sid", mssql.avDatabaseName);
+            WriteValueToConfig("av.jetspeed.db.username", mssql.avDatabaseUser);
+            WriteValueToConfig("av.jetspeed.db.password", mssql.GetAVDatabasePassword());
+
+        }
+
         public string GetValueFromConfig(string key) // get a config value from a given key
         {
             try
@@ -47,14 +64,13 @@ namespace AA_ChangeDBConfig.Business
                 int indexOfEquals = content.IndexOf("=", indexOfKey);
                 string value = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals) - 1);
 
-
                 switch (key)
                 {
                     case "av.db.host":
                         value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("av.db.port");
                         break;
-                    case "jetspeed.db.host":
-                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("jetspeed.db.port");
+                    case "av.jetspeed.db.host":
+                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("av.jetspeed.db.port");
                         break;
                     default:
                         break;
@@ -70,7 +86,7 @@ namespace AA_ChangeDBConfig.Business
             {
                 logger.LogError(string.Format("Directory not found, error: {0} {1}", dex.Message, dex.StackTrace));
             }
-            catch (SecurityException sex) // the name fits, not my fault
+            catch (SecurityException sex) 
             {
                 logger.LogError(string.Format("SecurityException getting config of {0}, error: {1} {2}", key, sex.Message, sex.StackTrace));
             }
@@ -87,7 +103,7 @@ namespace AA_ChangeDBConfig.Business
 
         public void WriteValueToConfig(string key, string newValue)
         {
-            if ((key == "av.db.host" || key == "jetspeed.db.host") && newValue.Contains(":"))
+            if ((key == "av.db.host" || key == "av.jetspeed.db.host") && newValue.Contains(":"))
             {
                 logger.LogTrace("Entering port strip logic");
                 string port = newValue.Substring(newValue.IndexOf(":") + 1, newValue.Length - newValue.IndexOf(":") - 1);
@@ -97,8 +113,8 @@ namespace AA_ChangeDBConfig.Business
                     case "av.db.host":
                         new ConfigHandler(PathToConfigFile).WriteValueToConfig("av.db.port", port);
                         break;
-                    case "jetspeed.db.host":
-                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("jetspeed.db.port", port);
+                    case "av.jetspeed.db.host":
+                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("av.jetspeed.db.port", port);
                         break;
                     default:
                         break;
@@ -112,15 +128,21 @@ namespace AA_ChangeDBConfig.Business
             int indexOfEquals = content.IndexOf("=", indexOfKey); // get the index of the equals sign after the config item
             string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals)).Trim(); // get the old value
             logger.LogTrace("Old value: " + oldValue);
+
             string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey)); // get the entire line
             string newConfigLine = oldConfigLine.Replace(oldValue, newValue); // replace the old value in the line with the new value
             logger.LogToUI("New config line: " + newConfigLine);
+
             string newFile = content.Replace(oldConfigLine, newConfigLine);
+
             logger.LogToUI("Backing up " + PathToConfigFile);
+
             if (File.Exists(PathToConfigFile + ".backup"))
                 File.Delete(PathToConfigFile + ".backup");
+
             File.Copy(PathToConfigFile, PathToConfigFile + ".backup");
             logger.LogToUI("Writing new config");
+
             File.WriteAllText(PathToConfigFile, newFile, Encoding.Default);
             logger.LogTrace("Updated " + key + " to " + newConfigLine);
         }

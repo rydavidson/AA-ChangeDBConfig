@@ -132,6 +132,26 @@ namespace AA_ChangeDBConfig.Models
 
         }
 
+        public string GetAVDatabasePassword()
+        {
+            return avDatabasePassword.ToString();
+        }
+
+        public string GetJetspeedDatabasePassword()
+        {
+            return avDatabasePassword.ToString();
+        }
+
+        public SecureString GetAVDatabasePasswordSecure()
+        {
+            return avDatabasePassword;
+        }
+
+        public SecureString GetJetspeedDatabasePasswordSecure()
+        {
+            return jetspeedDatabasePassword;
+        }
+
         #endregion
 
     }

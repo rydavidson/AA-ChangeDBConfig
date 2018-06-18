@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AA_ChangeDBConfig.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace AA_ChangeDBConfig.Business
         public bool IsLogTraceEnabled { get; set; }
         public string CachedVersion { get; set; }
         public string CachedInstance { get; set; }
+        public string CachedAAInstallDir { get; set; }
         public Dictionary<string, string> ConfigKeys { get; set; }
+        public MSSQLConfig CachedMSSQLConfig { get; set; }
 
         GlobalConfigs()
         {
