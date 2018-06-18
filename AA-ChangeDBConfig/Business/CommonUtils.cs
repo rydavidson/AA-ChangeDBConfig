@@ -120,11 +120,15 @@ namespace AA_ChangeDBConfig.Business
 
         public static string GetAAInstallDir()
         {
+            if(GlobalConfigs.Instance.CachedAAInstallDir != null)
+            {
+                return GlobalConfigs.Instance.CachedAAInstallDir;
+            }
             string version = GlobalConfigs.Instance.CachedVersion;
             string instance = GlobalConfigs.Instance.CachedInstance;
             RegistryKey reg = GetAccelaBaseKey();
             string installDir = "";
-            if (reg != null)
+            if (reg != null && version != null && instance != null)
             {
                 try
                 {
