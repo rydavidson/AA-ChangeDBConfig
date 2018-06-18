@@ -32,12 +32,14 @@ namespace AA_ChangeDBConfig
         {
             GlobalConfigs.Instance.IsLogDebugEnabled = true;
             GlobalConfigs.Instance.IsLogTraceEnabled = true;
+            //av_webTab.Visibility = Visibility.Collapsed;
+
 
             try
             {
                 foreach (string version in CommonUtils.GetAAVersions())
                 {
-                    versionsComboBox.Items.Add(version);
+                    versionsComboBox_biz.Items.Add(version);
                     try
                     {
                         foreach (string instance in CommonUtils.GetAAInstancesByVersion(version))
@@ -83,20 +85,20 @@ namespace AA_ChangeDBConfig
 
         private void PopulateInstanceComboBox(object sender, SelectionChangedEventArgs e)
         {
-            string selectedVersion = versionsComboBox.SelectedValue.ToString();
+            string selectedVersion = versionsComboBox_biz.SelectedValue.ToString();
             GlobalConfigs.Instance.CachedVersion = selectedVersion;
             if (selectedVersion != "")
             {
                 foreach (string instance in LookupInstancesForVersion(selectedVersion))
                 {
-                    instancesComboBox.Items.Add(instance);
+                    instancesComboBox_biz.Items.Add(instance);
                 }
             }
         }
 
         private void SelectedInstanceChanged(object sender, SelectionChangedEventArgs e)
         {
-            GlobalConfigs.Instance.CachedInstance = instancesComboBox.SelectedValue.ToString();
+            GlobalConfigs.Instance.CachedInstance = instancesComboBox_biz.SelectedValue.ToString();
         }
 
         private void Exit(object sender, RoutedEventArgs e)
@@ -143,17 +145,17 @@ namespace AA_ChangeDBConfig
         {
             ConfigHandler config = new ConfigHandler(loadedConfig);
 
-            mssql.serverHostname = dbServerTextBox.Text;
+            mssql.serverHostname = dbServerTextBox_biz.Text;
 
             // av db
-            mssql.avDatabaseName = avDBTextBox.Text;
-            mssql.avDatabaseUser = avDBUserTextBox.Text;
-            mssql.SetAVDatabasePassword(avDBPasswordTextBox.Password);
+            mssql.avDatabaseName = avDBTextBox_biz.Text;
+            mssql.avDatabaseUser = avDBUserTextBox_biz.Text;
+            mssql.SetAVDatabasePassword(avDBPasswordTextBox_biz.Password);
 
             // jetspeed db
-            mssql.jetspeedDatabaseName = jetspeedDBTextBox.Text;
-            mssql.jetspeedDatabaseUser = jetspeedUserTextBox.Text;
-            mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox.SecurePassword);
+            mssql.jetspeedDatabaseName = jetspeedDBTextBox_biz.Text;
+            mssql.jetspeedDatabaseUser = jetspeedUserTextBox_biz.Text;
+            mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox_biz.SecurePassword);
 
             config.WriteMSSQLConfigToFile(mssql);
             UpdateUI(mssql);
@@ -162,17 +164,17 @@ namespace AA_ChangeDBConfig
 
         public void UpdateUI(MSSQLConfig _mssql)
         {
-            dbServerTextBox.Text = _mssql.serverHostname;
+            dbServerTextBox_biz.Text = _mssql.serverHostname;
 
             // av db
-            avDBTextBox.Text = _mssql.avDatabaseName;
-            avDBUserTextBox.Text = _mssql.avDatabaseUser;
-            avDBPasswordTextBox.Password = _mssql.GetAVDatabasePassword();
+            avDBTextBox_biz.Text = _mssql.avDatabaseName;
+            avDBUserTextBox_biz.Text = _mssql.avDatabaseUser;
+            avDBPasswordTextBox_biz.Password = _mssql.GetAVDatabasePassword();
 
             // jetspeed db
-            jetspeedDBTextBox.Text = _mssql.jetspeedDatabaseName;
-            jetspeedUserTextBox.Text = _mssql.jetspeedDatabaseUser;
-            jetspeedPasswordTextBox.Password = _mssql.GetJetspeedDatabasePassword();
+            jetspeedDBTextBox_biz.Text = _mssql.jetspeedDatabaseName;
+            jetspeedUserTextBox_biz.Text = _mssql.jetspeedDatabaseUser;
+            jetspeedPasswordTextBox_biz.Password = _mssql.GetJetspeedDatabasePassword();
         }
     }
 }
