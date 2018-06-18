@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using AA_ChangeDBConfig.Business;
+using AA_ChangeDBConfig.Models;
 using Microsoft.Win32;
 
 namespace AA_ChangeDBConfig
@@ -17,6 +19,8 @@ namespace AA_ChangeDBConfig
         Logger logger = new Logger("UI.log");
         Dictionary<string, string> instancesWithVersions = new Dictionary<string, string>();
         string loadedConfig = "";
+        MSSQLConfig mssql = new MSSQLConfig();
+
 
         public MainWindow()
         {
@@ -28,7 +32,6 @@ namespace AA_ChangeDBConfig
         {
             GlobalConfigs.Instance.IsLogDebugEnabled = true;
             GlobalConfigs.Instance.IsLogTraceEnabled = true;
-
 
             try
             {
@@ -62,8 +65,6 @@ namespace AA_ChangeDBConfig
                 message.Append(ex.StackTrace);
                 logger.LogError(message.ToString());
             }
-
-
         }
 
         private List<string> LookupInstancesForVersion(string version)
@@ -102,6 +103,7 @@ namespace AA_ChangeDBConfig
         {
             Environment.Exit(0);
         }
+
         private void LoadConfigFromFile(object sender, RoutedEventArgs e)
         {
             OpenFileDialog getPropFile = new OpenFileDialog();
@@ -112,13 +114,61 @@ namespace AA_ChangeDBConfig
             {
                 loadedConfig = getPropFile.FileName;
                 ConfigHandler config = new ConfigHandler(loadedConfig);
-                dbServerTextBox.Text = config.GetValueFromConfig("av.db.host");
+
+                if(config.GetValueFromConfig("av.db") == "mssql")
+                {
+                    mssql.serverHostname = config.GetValueFromConfig("av.db.host");
+
+                    // av db
+                    mssql.avDatabaseName = config.GetValueFromConfig("av.db.sid");
+                    mssql.avDatabaseUser = config.GetValueFromConfig("av.db.username");
+                    mssql.SetAVDatabasePassword(config.GetValueFromConfig("av.db.password"));
+
+                    // jetspeed db
+                    mssql.jetspeedDatabaseName = config.GetValueFromConfig("av.jetspeed.db.sid");
+                    mssql.jetspeedDatabaseUser = config.GetValueFromConfig("av.jetspeed.db.username");
+                    mssql.SetJetspeedDatabasePassword(config.GetValueFromConfig("av.jetspeed.db.password"));
+
+                    UpdateUI(mssql);
+                }
+                else
+                {
+                    MessageBox.Show("Unsupported connection type detected: " + config.GetValueFromConfig("av.db"));
+                    logger.LogToUI("Unsupported database connection type");
+                }
+
             }
         }
         private void WriteConfigToFile(object sender, RoutedEventArgs e)
         {
-            ConfigHandler config = new ConfigHandler(loadedConfig);
-            config.WriteValueToConfig("av.db.host", dbServerTextBox.Text);
+
+            mssql.serverHostname = dbServerTextBox.Text;
+
+            // av db
+            mssql.avDatabaseName = avDBTextBox.Text;
+            mssql.avDatabaseUser = avDBUserTextBox.Text;
+            mssql.SetAVDatabasePassword(avDBPasswordTextBox.Password);
+
+            // jetspeed db
+            mssql.jetspeedDatabaseName = jetspeedDBTextBox.Text;
+            mssql.jetspeedDatabaseUser = jetspeedUserTextBox.Text;
+            mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox.SecurePassword);
+
+        }
+
+        public void UpdateUI(MSSQLConfig _mssql)
+        {
+            dbServerTextBox.Text = _mssql.serverHostname;
+
+            // av db
+            avDBTextBox.Text = _mssql.avDatabaseName;
+            avDBUserTextBox.Text = _mssql.avDatabaseUser;
+            avDBPasswordTextBox.Password = _mssql.GetAVDatabasePassword();
+
+            // jetspeed db
+            jetspeedDBTextBox.Text = _mssql.jetspeedDatabaseName;
+            jetspeedUserTextBox.Text = _mssql.jetspeedDatabaseUser;
+            jetspeedPasswordTextBox.Password = _mssql.GetJetspeedDatabasePassword();
         }
     }
 }

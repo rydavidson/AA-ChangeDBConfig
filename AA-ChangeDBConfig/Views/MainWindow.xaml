@@ -14,24 +14,22 @@
         <Button x:Name="commitButton" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="389,369,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile"/>
         <TextBox x:Name="dbServerTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="382" FontSize="14"/>
         <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,101,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <TextBox x:Name="avDBTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="avdbLabel" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,136,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <TextBox x:Name="avDBUserTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,167,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="108,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="11,198,0,0" Width="92" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <TextBox x:Name="jetspeedDBTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,136,0,0" Width="132" HorizontalContentAlignment="Center"/>
         <ComboBox x:Name="instancesComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged"/>
         <Label x:Name="selectInstanceLabel" Content="Select Instance" Grid.Column="1" HorizontalAlignment="Left" Margin="135,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
+        <TextBox x:Name="jetspeedUserTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="jetspeedUserLabel" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,167,0,0" Width="132" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="dbserverTextbox_Copy5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="26" Margin="370,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14"/>
         <Label x:Name="jetspeedPassLabel" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="233,198,0,0" Width="132" HorizontalContentAlignment="Center"/>
         <Button x:Name="loadConfigButton" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="389,324,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfigFromFile"/>
         <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open Config File"/>
+                <MenuItem Header="_Open Config File" Click="LoadConfigFromFile"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
@@ -39,5 +37,7 @@
         <ComboBox x:Name="versionsComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox"/>
         <Label x:Name="selectVersionLabe" Content="Select Version" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="logBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="159" Margin="11,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="354" ScrollViewer.CanContentScroll="True"/>
+        <PasswordBox x:Name="avDBPasswordTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="108,198,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+        <PasswordBox x:Name="jetspeedPasswordTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="372,198,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
     </Grid>
 </Window>
