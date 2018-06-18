@@ -141,6 +141,7 @@ namespace AA_ChangeDBConfig
         }
         private void WriteConfigToFile(object sender, RoutedEventArgs e)
         {
+            ConfigHandler config = new ConfigHandler(loadedConfig);
 
             mssql.serverHostname = dbServerTextBox.Text;
 
@@ -153,6 +154,9 @@ namespace AA_ChangeDBConfig
             mssql.jetspeedDatabaseName = jetspeedDBTextBox.Text;
             mssql.jetspeedDatabaseUser = jetspeedUserTextBox.Text;
             mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox.SecurePassword);
+
+            config.WriteMSSQLConfigToFile(mssql);
+            UpdateUI(mssql);
 
         }
 
