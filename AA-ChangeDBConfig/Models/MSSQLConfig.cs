@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AA_ChangeDBConfig.Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -16,6 +17,7 @@ namespace AA_ChangeDBConfig.Models
         public string jetspeedDatabaseName { get; set; }
         public string avDatabaseUser { get; set; }
         public string jetspeedDatabaseUser { get; set; }
+        public string component { get; set; }
         private SecureString avDatabasePassword = new SecureString();
         private SecureString jetspeedDatabasePassword = new SecureString();
 
@@ -51,7 +53,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetAVDatabasePassword(SecureString _password)
         {
-            avDatabasePassword.Clear();
+            
             if (avDatabasePassword.IsReadOnly())
             {
                 avDatabasePassword.Dispose();
@@ -61,6 +63,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                avDatabasePassword.Clear();
                 avDatabasePassword = _password;
                 avDatabasePassword.MakeReadOnly();
             }
@@ -68,7 +71,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetJetspeedDatabasePassword(SecureString _password)
         {
-            jetspeedDatabasePassword.Clear();
+            
             if (jetspeedDatabasePassword.IsReadOnly())
             {
                 jetspeedDatabasePassword.Dispose();
@@ -78,6 +81,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                jetspeedDatabasePassword.Clear();
                 jetspeedDatabasePassword = _password;
                 jetspeedDatabasePassword.MakeReadOnly();
             }
@@ -86,7 +90,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetAVDatabasePassword(string _password)
         {
-            avDatabasePassword.Clear();
+            
             if (avDatabasePassword.IsReadOnly())
             {
                 avDatabasePassword.Dispose();
@@ -99,6 +103,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                avDatabasePassword.Clear();
                 foreach (char c in _password)
                 {
                     avDatabasePassword.AppendChar(c);
@@ -110,7 +115,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetJetspeedDatabasePassword(string _password)
         {
-            jetspeedDatabasePassword.Clear();
+           
             if (jetspeedDatabasePassword.IsReadOnly())
             {
                 jetspeedDatabasePassword.Dispose();
@@ -123,6 +128,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                jetspeedDatabasePassword.Clear();
                 foreach (char c in _password)
                 {
                     jetspeedDatabasePassword.AppendChar(c);
@@ -130,6 +136,26 @@ namespace AA_ChangeDBConfig.Models
                 jetspeedDatabasePassword.MakeReadOnly();
             }
 
+        }
+
+        public string GetAVDatabasePassword()
+        {
+            return CommonUtils.DecryptSecureString(avDatabasePassword);
+        }
+
+        public string GetJetspeedDatabasePassword()
+        {
+            return CommonUtils.DecryptSecureString(jetspeedDatabasePassword);
+        }
+
+        public SecureString GetAVDatabasePasswordSecure()
+        {
+            return avDatabasePassword;
+        }
+
+        public SecureString GetJetspeedDatabasePasswordSecure()
+        {
+            return jetspeedDatabasePassword;
         }
 
         #endregion
