@@ -117,12 +117,12 @@ namespace AA_ChangeDBConfig.Business
 
         public static string GetAAInstallDir()
         {
-            if(GlobalConfigs.Instance.CachedAAInstallDir != null)
+            if(GlobalConfigs.Instance.AAInstallDir != null)
             {
-                return GlobalConfigs.Instance.CachedAAInstallDir;
+                return GlobalConfigs.Instance.AAInstallDir;
             }
-            string version = GlobalConfigs.Instance.CachedVersion;
-            string instance = GlobalConfigs.Instance.CachedInstance;
+            string version = GlobalConfigs.Instance.AAVersion;
+            string instance = GlobalConfigs.Instance.AAInstance;
             RegistryKey reg = GetAccelaBaseKey();
             string installDir = "";
             if (reg != null && version != null && instance != null)
@@ -137,22 +137,16 @@ namespace AA_ChangeDBConfig.Business
                     logger.LogError("Error while reading install directory: " + ex.Message + ex.StackTrace);
                 }
             }
-            if(installDir != "")
-                logger.LogToUI("InstallDir: " + installDir);
+            if (installDir != "")
+                GlobalConfigs.Instance.AAInstallDir = installDir;
             return installDir;
         }
         public static List<string> GetAAInstalledComponents(string _version, string _instance)
         {
             RegistryKey reg = GetAccelaBaseKey();
             string components = GetInstanceKey(_version, _instance).GetValue("InstallComponents").ToString();
-            StringBuilder comps = new StringBuilder();
-            foreach(string component in components.Split(','))
-            {
-                comps.Append(component);
-                comps.Append(",");
-            }
-            comps.Remove(comps.ToString().Length - 1, 1);
-            logger.LogToUI("Installed Components: " + comps.ToString());
+            List<string> compList = new List<string>();
+            compList
             return new List<string>(components.Split(','));
         }
         public static Dictionary<string,string> GetAAConfigFilePaths(string _version, string _instance)

@@ -16,20 +16,22 @@ namespace AA_ChangeDBConfig.Business
 
         private string PathToConfigFile { get; set; }
         private Logger logger = new Logger("ConfigHandler.log");
+        private string component;
 
         public ConfigHandler() { }
 
-        public ConfigHandler(string _pathToConfigFile)
+        public ConfigHandler(string _pathToConfigFile, string _component)
         {
             //PathToConfigFile = _pathToConfigFile.Replace("\"","");
             PathToConfigFile = _pathToConfigFile;
-            GlobalConfigs.Instance.CachedPathToConfigFile = _pathToConfigFile;
+            GlobalConfigs.Instance.PathToConfigFile = _pathToConfigFile;
+            component = _component;
         }
 
-        private Dictionary<string, string> GetConfig(string component)
+        private Dictionary<string, string> GetConfig()
         {
             Dictionary<string, string> configPairs = new Dictionary<string, string>();
-            Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
+            Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.AAVersion, GlobalConfigs.Instance.AAInstance);
 
             foreach (KeyValuePair<string, string> configFile in configFiles)
             {
@@ -81,10 +83,10 @@ namespace AA_ChangeDBConfig.Business
                 switch (key)
                 {
                     case "av.db.host":
-                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("av.db.port");
+                        value += ":" + new ConfigHandler(PathToConfigFile, component).GetValueFromConfig("av.db.port");
                         break;
                     case "av.jetspeed.db.host":
-                        value += ":" + new ConfigHandler(PathToConfigFile).GetValueFromConfig("av.jetspeed.db.port");
+                        value += ":" + new ConfigHandler(PathToConfigFile, component).GetValueFromConfig("av.jetspeed.db.port");
                         break;
                     default:
                         break;
@@ -94,23 +96,23 @@ namespace AA_ChangeDBConfig.Business
             }
             catch (ArgumentNullException anex)
             {
-                logger.LogError(string.Format("ArgumentNullException getting config of {0}, error: {1} {2}", key, anex.Message, anex.StackTrace));
+                logger.LogError(string.Format("ArgumentNullException getting config of {0}, error: {1}{2}", key, anex.Message, anex.StackTrace));
             }
             catch (DirectoryNotFoundException dex)
             {
-                logger.LogError(string.Format("Directory not found, error: {0} {1}", dex.Message, dex.StackTrace));
+                logger.LogError(string.Format("Directory not found, error: {0}{1}", dex.Message, dex.StackTrace));
             }
             catch (SecurityException sex)
             {
-                logger.LogError(string.Format("SecurityException getting config of {0}, error: {1} {2}", key, sex.Message, sex.StackTrace));
+                logger.LogError(string.Format("SecurityException getting config of {0}, error: {1}{2}", key, sex.Message, sex.StackTrace));
             }
             catch (UnauthorizedAccessException uaex)
             {
-                logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, uaex.Message, uaex.StackTrace));
+                logger.LogError(string.Format("Failed to get config of {0}, error: {1}{2}", key, uaex.Message, uaex.StackTrace));
             }
             catch (Exception e)
             {
-                logger.LogError(string.Format("Failed to get config of {0}, error: {1} {2}", key, e.Message, e.StackTrace));
+                logger.LogError(string.Format("Failed to get config of {0}, error: {1}{2}", key, e.Message, e.StackTrace));
             }
             return "";
         }
@@ -125,10 +127,10 @@ namespace AA_ChangeDBConfig.Business
                 switch (key)
                 {
                     case "av.db.host":
-                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("av.db.port", port);
+                        new ConfigHandler(PathToConfigFile, component).WriteValueToConfig("av.db.port", port);
                         break;
                     case "av.jetspeed.db.host":
-                        new ConfigHandler(PathToConfigFile).WriteValueToConfig("av.jetspeed.db.port", port);
+                        new ConfigHandler(PathToConfigFile, component).WriteValueToConfig("av.jetspeed.db.port", port);
                         break;
                     default:
                         break;
