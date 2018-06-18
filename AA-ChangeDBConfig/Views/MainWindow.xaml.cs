@@ -126,13 +126,13 @@ namespace AA_ChangeDBConfig
             //logger.LogToUI(mssql.component);
             initialDir = paths[mssql.component];
 
-            if (File.Exists(initialDir))
+            if (File.Exists(initialDir) && e.OriginalSource != openConfigFileMenuItem)
             {
-                
+
                 loadedConfig = initialDir;
                 ConfigHandler config = new ConfigHandler(loadedConfig, mssql.component);
 
-                logger.LogToUI("Loading config direct from detected file: " + loadedConfig, "logBox_" + mssql.component.Remove(0,3));
+                logger.LogToUI("Loading config direct from detected file: " + loadedConfig, "logBox_" + mssql.component.Remove(0, 3));
                 if (config.GetValueFromConfig("av.db") == "mssql")
                 {
                     mssql.serverHostname = config.GetValueFromConfig("av.db.host");
@@ -225,36 +225,36 @@ namespace AA_ChangeDBConfig
 
         public void UpdateUI(MSSQLConfig _mssql)
         {
-            dbServerTextBox_biz.Text = _mssql.serverHostname;
-            dbServer_cfmx.Text = _mssql.serverHostname;
-
-            // av db
-            avDBTextBox_biz.Text = _mssql.avDatabaseName;
-            avDBUserTextBox_biz.Text = _mssql.avDatabaseUser;
-            avDBPasswordTextBox_biz.Password = _mssql.GetAVDatabasePassword();
-            avDBTextBox_cfmx.Text = _mssql.avDatabaseName;
-            avDBUserTextBox_cfmx.Text = _mssql.avDatabaseUser;
-            avDBPasswordTextBox_cfmx.Password = _mssql.GetAVDatabasePassword();
-
-            // jetspeed db
-            jetspeedDBTextBox_biz.Text = _mssql.jetspeedDatabaseName;
-            jetspeedUserTextBox_biz.Text = _mssql.jetspeedDatabaseUser;
-            jetspeedPasswordTextBox_biz.Password = _mssql.GetJetspeedDatabasePassword();
-
             switch (_mssql.component)
             {
                 case "av.biz":
+                    dbServerTextBox_biz.Text = _mssql.serverHostname;
+                    avDBTextBox_biz.Text = _mssql.avDatabaseName;
+                    avDBUserTextBox_biz.Text = _mssql.avDatabaseUser;
+                    avDBPasswordTextBox_biz.Password = _mssql.GetAVDatabasePassword();
+                    jetspeedDBTextBox_biz.Text = _mssql.jetspeedDatabaseName;
+                    jetspeedUserTextBox_biz.Text = _mssql.jetspeedDatabaseUser;
+                    jetspeedPasswordTextBox_biz.Password = _mssql.GetJetspeedDatabasePassword();
                     commitButton_biz.IsEnabled = true;
                     break;
                 case "av.cfmx":
+                    dbServer_cfmx.Text = _mssql.serverHostname;
+                    avDBTextBox_cfmx.Text = _mssql.avDatabaseName;
+                    avDBUserTextBox_cfmx.Text = _mssql.avDatabaseUser;
+                    avDBPasswordTextBox_cfmx.Password = _mssql.GetAVDatabasePassword();
                     commitButton_cfmx.IsEnabled = true;
                     break;
                 case "av.web":
+                    dbServerTextBox_web.Text = _mssql.serverHostname;
+                    avDBTextBox_web.Text = _mssql.avDatabaseName;
+                    avDBUserTextBox_web.Text = _mssql.avDatabaseUser;
+                    avDBPasswordTextBox_web.Password = _mssql.GetAVDatabasePassword();
                     commitButton_web.IsEnabled = true;
                     break;
                 default:
                     logger.LogWarn("Couldn't enable a commit button. There may be an issue. Selected component is: " + mssql.component);
                     break;
+
             }
         }
 
