@@ -23,12 +23,13 @@ namespace AA_ChangeDBConfig.Business
         {
             //PathToConfigFile = _pathToConfigFile.Replace("\"","");
             PathToConfigFile = _pathToConfigFile;
+            GlobalConfigs.Instance.CachedPathToConfigFile = _pathToConfigFile;
         }
 
         private Dictionary<string, string> GetConfig(string component)
         {
             Dictionary<string, string> configPairs = new Dictionary<string, string>();
-            Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths();
+            Dictionary<string, string> configFiles = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
 
             foreach (KeyValuePair<string, string> configFile in configFiles)
             {

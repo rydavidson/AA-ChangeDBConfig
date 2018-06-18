@@ -96,20 +96,32 @@ namespace AA_ChangeDBConfig
             }
         }
 
-        private void SelectedInstanceChanged(object sender, SelectionChangedEventArgs e)
-        {
-            GlobalConfigs.Instance.CachedInstance = instancesComboBox_biz.SelectedValue.ToString();
-        }
 
-        private void Exit(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
 
-        private void LoadConfigFromFile(object sender, RoutedEventArgs e)
+        private void LoadConfig(object sender, RoutedEventArgs e)
         {
+            if (GlobalConfigs.Instance.CachedVersion == null || GlobalConfigs.Instance.CachedInstance == null)
+            {
+                MessageBox.Show("You must select a version and instance to work with");
+                return;
+            }
+            string initialDir = CommonUtils.GetAAInstallDir();
+            Dictionary<string, string> paths = CommonUtils.GetAAConfigFilePaths(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
+
+            if (e.OriginalSource == loadConfigButton_biz)
+            {
+                initialDir = paths["av.biz"];
+            }
+            if (e.OriginalSource == loadConfigButton_cfmx)
+            {
+                initialDir = paths["av.cfmx"];
+            }
+            if (e.OriginalSource == loadConfigButton_web)
+            {
+                initialDir = paths["av.web"];
+            }
             OpenFileDialog getPropFile = new OpenFileDialog();
-            getPropFile.InitialDirectory = CommonUtils.GetAAInstallDir();
+            getPropFile.InitialDirectory = initialDir;
             getPropFile.Filter = "Properties files (*.properties)|*.properties";
 
             if(getPropFile.ShowDialog() == true)
@@ -120,6 +132,7 @@ namespace AA_ChangeDBConfig
                 if(config.GetValueFromConfig("av.db") == "mssql")
                 {
                     mssql.serverHostname = config.GetValueFromConfig("av.db.host");
+                    mssql.component = "";
 
                     // av db
                     mssql.avDatabaseName = config.GetValueFromConfig("av.db.sid");
@@ -143,6 +156,12 @@ namespace AA_ChangeDBConfig
         }
         private void WriteConfigToFile(object sender, RoutedEventArgs e)
         {
+            if (loadedConfig == "" || loadedConfig == null)
+            {
+                if (GlobalConfigs.Instance.CachedPathToConfigFile == "" || GlobalConfigs.Instance.CachedPathToConfigFile == null)
+                    return;
+                loadedConfig = GlobalConfigs.Instance.CachedPathToConfigFile;
+            }
             ConfigHandler config = new ConfigHandler(loadedConfig);
 
             mssql.serverHostname = dbServerTextBox_biz.Text;
@@ -175,6 +194,16 @@ namespace AA_ChangeDBConfig
             jetspeedDBTextBox_biz.Text = _mssql.jetspeedDatabaseName;
             jetspeedUserTextBox_biz.Text = _mssql.jetspeedDatabaseUser;
             jetspeedPasswordTextBox_biz.Password = _mssql.GetJetspeedDatabasePassword();
+        }
+
+        private void SelectedInstanceChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GlobalConfigs.Instance.CachedInstance = instancesComboBox_biz.SelectedValue.ToString();
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
