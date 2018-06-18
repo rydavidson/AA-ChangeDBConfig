@@ -77,17 +77,12 @@ namespace AA_ChangeDBConfig.Business
             return accelaBaseKey;
         }
 
-        private static RegistryKey GetInstanceKeyCached() // use this unless you really need to override the cached values
-        {
-            
-            if(instanceKey != null)
-                return instanceKey;
-
-            return GetInstanceKey(GlobalConfigs.Instance.CachedVersion, GlobalConfigs.Instance.CachedInstance);
-        }
-
         private static RegistryKey GetInstanceKey(string _version, string _instance)
         {
+
+            if (instanceKey != null)
+                return instanceKey;
+
             RegistryKey reg = GetAccelaBaseKey();
 
             try
@@ -146,17 +141,24 @@ namespace AA_ChangeDBConfig.Business
                 logger.LogToUI("InstallDir: " + installDir);
             return installDir;
         }
-        public static List<string> GetAAInstalledComponents()
+        public static List<string> GetAAInstalledComponents(string _version, string _instance)
         {
             RegistryKey reg = GetAccelaBaseKey();
-            string components = GetInstanceKeyCached().GetValue("InstallComponents").ToString();
-            logger.LogToUI("Installed Components: " + components.Split(',').ToString());
+            string components = GetInstanceKey(_version, _instance).GetValue("InstallComponents").ToString();
+            StringBuilder comps = new StringBuilder();
+            foreach(string component in components.Split(','))
+            {
+                comps.Append(component);
+                comps.Append(",");
+            }
+            comps.Remove(comps.ToString().Length - 1, 1);
+            logger.LogToUI("Installed Components: " + comps.ToString());
             return new List<string>(components.Split(','));
         }
-        public static Dictionary<string,string> GetAAConfigFilePaths()
+        public static Dictionary<string,string> GetAAConfigFilePaths(string _version, string _instance)
         {
             Dictionary<string, string> paths = new Dictionary<string, string>();
-            List<string> components = GetAAInstalledComponents();
+            List<string> components = GetAAInstalledComponents(_version, _instance);
             string installDir = GetAAInstallDir();
             StringBuilder sb = new StringBuilder();
 

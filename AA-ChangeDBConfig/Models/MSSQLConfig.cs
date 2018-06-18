@@ -17,6 +17,7 @@ namespace AA_ChangeDBConfig.Models
         public string jetspeedDatabaseName { get; set; }
         public string avDatabaseUser { get; set; }
         public string jetspeedDatabaseUser { get; set; }
+        public string component { get; set; }
         private SecureString avDatabasePassword = new SecureString();
         private SecureString jetspeedDatabasePassword = new SecureString();
 
