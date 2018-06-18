@@ -23,7 +23,7 @@ namespace AA_ChangeDBConfig.Business
         {            
             sb.AppendLine(message);
             var main = Application.Current.Windows.Cast<Window>().FirstOrDefault(windows => windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
-            main.logBox.Text += sb.ToString();
+            main.logBox_biz.Text += sb.ToString();
             sb.Clear();
         }
 

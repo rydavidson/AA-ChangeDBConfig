@@ -17,6 +17,8 @@ namespace AA_ChangeDBConfig.Business
         private string PathToConfigFile { get; set; }
         private Logger logger = new Logger("ConfigHandler.log");
 
+        public ConfigHandler() { }
+
         public ConfigHandler(string _pathToConfigFile)
         {
             //PathToConfigFile = _pathToConfigFile.Replace("\"","");
@@ -30,8 +32,9 @@ namespace AA_ChangeDBConfig.Business
 
             foreach (KeyValuePair<string, string> configFile in configFiles)
             {
-                if (configFile.Key == component && configFile.Value == PathToConfigFile)
+                if (configFile.Key == component)
                 {
+                    PathToConfigFile = configFile.Value;
 
                 }
             }
