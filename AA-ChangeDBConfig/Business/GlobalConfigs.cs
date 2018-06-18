@@ -18,6 +18,7 @@ namespace AA_ChangeDBConfig.Business
         public string CachedVersion { get; set; }
         public string CachedInstance { get; set; }
         public string CachedAAInstallDir { get; set; }
+        public string CachedPathToConfigFile { get; set; }
         public Dictionary<string, string> ConfigKeys { get; set; }
         public MSSQLConfig CachedMSSQLConfig { get; set; }
 
