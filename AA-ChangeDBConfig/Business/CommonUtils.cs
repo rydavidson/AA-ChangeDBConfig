@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -165,6 +167,12 @@ namespace AA_ChangeDBConfig.Business
                 paths.Add(comp,stemp);
             }
             return paths;
+        }
+
+        public static String DecryptSecureString(SecureString value)
+        {
+            string val = new System.Net.NetworkCredential(string.Empty, value).Password; // not intended use but a convenient way to get the string from a SecureString without marshalling
+            return val;
         }
     }
 }
