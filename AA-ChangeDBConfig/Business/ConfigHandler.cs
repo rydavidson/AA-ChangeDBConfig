@@ -91,7 +91,7 @@ namespace AA_ChangeDBConfig.Business
             {
                 logger.LogTrace("Entering port strip logic");
                 string port = newValue.Substring(newValue.IndexOf(":") + 1, newValue.Length - newValue.IndexOf(":") - 1);
-                logger.LogToUI("New port: " + port);
+                logger.LogTrace("New port: " + port);
                 switch (key)
                 {
                     case "av.db.host":
@@ -103,19 +103,26 @@ namespace AA_ChangeDBConfig.Business
                     default:
                         break;
                 }
-                newValue.Remove(newValue.IndexOf(":"));
+                newValue = newValue.Remove(newValue.IndexOf(":"));
             }
 
-            string content = File.ReadAllText(PathToConfigFile, Encoding.Default);
-            int indexOfKey = content.IndexOf(key);
-            int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey);
-            int indexOfEquals = content.IndexOf("=", indexOfKey);
-            string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals));
-            string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey));
-            string newConfigLine = oldConfigLine.Replace(oldValue, newValue);
+            string content = File.ReadAllText(PathToConfigFile, Encoding.Default); // read in the config file
+            int indexOfKey = content.IndexOf(key); // get the start of the config item
+            int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey); // get the end of the config item
+            int indexOfEquals = content.IndexOf("=", indexOfKey); // get the index of the equals sign after the config item
+            string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals)).Trim(); // get the old value
+            logger.LogTrace("Old value: " + oldValue);
+            string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey)); // get the entire line
+            string newConfigLine = oldConfigLine.Replace(oldValue, newValue); // replace the old value in the line with the new value
+            logger.LogToUI("New config line: " + newConfigLine);
             string newFile = content.Replace(oldConfigLine, newConfigLine);
-            File.WriteAllText(PathToConfigFile, newFile);
-            logger.LogToUI("Updated " + key + " to " + newConfigLine);
+            logger.LogToUI("Backing up " + PathToConfigFile);
+            if (File.Exists(PathToConfigFile + ".backup"))
+                File.Delete(PathToConfigFile + ".backup");
+            File.Copy(PathToConfigFile, PathToConfigFile + ".backup");
+            logger.LogToUI("Writing new config");
+            File.WriteAllText(PathToConfigFile, newFile, Encoding.Default);
+            logger.LogTrace("Updated " + key + " to " + newConfigLine);
         }
     }
 }
