@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AA_ChangeDBConfig.Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -51,7 +52,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetAVDatabasePassword(SecureString _password)
         {
-            avDatabasePassword.Clear();
+            
             if (avDatabasePassword.IsReadOnly())
             {
                 avDatabasePassword.Dispose();
@@ -61,6 +62,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                avDatabasePassword.Clear();
                 avDatabasePassword = _password;
                 avDatabasePassword.MakeReadOnly();
             }
@@ -68,7 +70,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetJetspeedDatabasePassword(SecureString _password)
         {
-            jetspeedDatabasePassword.Clear();
+            
             if (jetspeedDatabasePassword.IsReadOnly())
             {
                 jetspeedDatabasePassword.Dispose();
@@ -78,6 +80,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                jetspeedDatabasePassword.Clear();
                 jetspeedDatabasePassword = _password;
                 jetspeedDatabasePassword.MakeReadOnly();
             }
@@ -86,7 +89,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetAVDatabasePassword(string _password)
         {
-            avDatabasePassword.Clear();
+            
             if (avDatabasePassword.IsReadOnly())
             {
                 avDatabasePassword.Dispose();
@@ -99,6 +102,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                avDatabasePassword.Clear();
                 foreach (char c in _password)
                 {
                     avDatabasePassword.AppendChar(c);
@@ -110,7 +114,7 @@ namespace AA_ChangeDBConfig.Models
 
         public void SetJetspeedDatabasePassword(string _password)
         {
-            jetspeedDatabasePassword.Clear();
+           
             if (jetspeedDatabasePassword.IsReadOnly())
             {
                 jetspeedDatabasePassword.Dispose();
@@ -123,6 +127,7 @@ namespace AA_ChangeDBConfig.Models
             }
             else
             {
+                jetspeedDatabasePassword.Clear();
                 foreach (char c in _password)
                 {
                     jetspeedDatabasePassword.AppendChar(c);
@@ -134,12 +139,12 @@ namespace AA_ChangeDBConfig.Models
 
         public string GetAVDatabasePassword()
         {
-            return avDatabasePassword.ToString();
+            return CommonUtils.DecryptSecureString(avDatabasePassword);
         }
 
         public string GetJetspeedDatabasePassword()
         {
-            return avDatabasePassword.ToString();
+            return CommonUtils.DecryptSecureString(jetspeedDatabasePassword);
         }
 
         public SecureString GetAVDatabasePasswordSecure()
