@@ -143,24 +143,33 @@ namespace AA_ChangeDBConfig.Business
             if (indexOfKey < 0)
                 return; // exit if the config item isn't found
 
-                int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey); // get the end of the config item
-                int indexOfEquals = content.IndexOf("=", indexOfKey); // get the index of the equals sign after the config item
-                string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals)).Trim(); // get the old value
-                if (!oldValue.Contains("password"))
-                    logger.LogTrace("Old value: " + oldValue);
+            int indexEndOfValue = content.IndexOf(Environment.NewLine, indexOfKey); // get the end of the config item
+            int indexOfEquals = content.IndexOf("=", indexOfKey); // get the index of the equals sign after the config item
+            string oldValue = content.Substring(indexOfEquals + 1, (indexEndOfValue - indexOfEquals)).Trim(); // get the old value
+            if (!oldValue.Contains("password"))
+                logger.LogTrace("Old value: " + oldValue);
 
-                string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey)); // get the entire line
-                string newConfigLine = oldConfigLine.Replace(oldValue, newValue); // replace the old value in the line with the new value
-                if (!newConfigLine.Contains("password"))
-                    logger.LogToUI("New config line: " + newConfigLine);
+            string oldConfigLine = content.Substring(indexOfKey, (indexEndOfValue - indexOfKey)); // get the entire line
+            string newConfigLine;
+            if (oldValue == "" || oldValue == null)
+            {
+                newConfigLine = oldConfigLine + newValue; // handle empty values
+            }
+            else
+            {
+                newConfigLine = oldConfigLine.Replace(oldValue, newValue); // replace the old value in the line with the new value
+            }
+            if (!newConfigLine.Contains("password"))
+                logger.LogToUI("New config line: " + newConfigLine);
 
-                string newFile = content.Replace(oldConfigLine, newConfigLine);
 
-                //logger.LogToUI("Writing new config");
+            string newFile = content.Replace(oldConfigLine, newConfigLine);
 
-                File.WriteAllText(PathToConfigFile, newFile, Encoding.Default);
-                if (!key.Contains("password"))
-                    logger.LogTrace("Updated " + key + " to " + newConfigLine);
+            //logger.LogToUI("Writing new config");
+
+            File.WriteAllText(PathToConfigFile, newFile, Encoding.Default);
+            if (!key.Contains("password"))
+                logger.LogTrace("Updated " + key + " to " + newConfigLine);
 
         }
     }
