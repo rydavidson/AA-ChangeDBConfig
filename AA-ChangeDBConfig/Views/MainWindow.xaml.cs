@@ -153,6 +153,7 @@ namespace AA_ChangeDBConfig
                 }
                 else
                 {
+
                     MessageBox.Show("Unsupported connection type detected: " + config.GetValueFromConfig("av.db"));
                     logger.LogToUI("Unsupported database connection type", mssql.component);
                 }
@@ -185,6 +186,23 @@ namespace AA_ChangeDBConfig
                             mssql.SetJetspeedDatabasePassword(config.GetValueFromConfig("av.jetspeed.db.password"));
                         }
                         UpdateUI(mssql);
+                        if (e.OriginalSource == openConfigFileMenuItem)
+                        {
+                            switch (config.GetValueFromConfig("av.server"))
+                            {
+                                case "av.biz":
+                                    mainTabMenu.SelectedTab = av_bizTab;
+                                    av_bizTab.Focus();
+                                      break;
+                                case "av.cfmx":
+                                    mainTabMenu.SelectedItem = av_cfmxTab;
+                                    av_cfmxTab.Focus();
+                                    break;
+                                case "av.web":
+                                    mainTabMenu.SelectedItem = av_webTab;
+                                    break;
+                            }
+                        }
                     }
                     else
                     {
