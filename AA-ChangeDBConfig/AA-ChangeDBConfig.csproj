@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AA_ChangeDBConfig</RootNamespace>
     <AssemblyName>AA-ChangeDBConfig</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="rydavidson.Accela.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\AccelaLib\Common\bin\Debug\rydavidson.Accela.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="rydavidson.Accela.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\AccelaLib\Configuration\bin\Debug\rydavidson.Accela.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -57,12 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Business\CommonUtils.cs" />
-    <Compile Include="Business\ConfigHandler.cs" />
     <Compile Include="Business\GlobalConfigs.cs" />
-    <Compile Include="Business\Logger.cs" />
-    <Compile Include="Models\MSSQLConfig.cs" />
-    <Compile Include="Models\OracleConfig.cs" />
+    <Compile Include="Business\AALogger.cs" />
     <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -97,6 +100,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AccelaLib\Common\Common.csproj">
+      <Project>{beba0c98-a578-465a-b877-19d80a32abe1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AccelaLib\Configuration\Configuration.csproj">
+      <Project>{4c3cab0a-5280-4571-85b4-ab9464c2bb49}</Project>
+      <Name>Configuration</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,4 @@
-﻿<Application x:Class="AA_ChangeDBConfig.App"
+﻿<Application x:Class="AA_ChangeDBConfig.Views.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AA_ChangeDBConfig"
