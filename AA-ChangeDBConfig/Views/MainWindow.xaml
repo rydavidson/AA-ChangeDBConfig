@@ -5,20 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AA_ChangeDBConfig"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="Change DB Config" Height="511.97" Width="551.949" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" MinWidth="510" MinHeight="450">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="41*"/>
+            <ColumnDefinition Width="231*"/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
+        <Menu Grid.ColumnSpan="3" Height="20" VerticalAlignment="Top" VerticalContentAlignment="Top">
             <MenuItem Header="_File">
                 <MenuItem x:Name="openConfigFileMenuItem" Header="_Open Config File" Click="LoadConfig"/>
+                <Separator/>
+                <MenuItem x:Name="openDebugConsole" Header="_Debug Console" Click="RunDebugConsole"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
         </Menu>
-        <TabControl x:Name="mainTabMenu" HorizontalAlignment="Left" Height="461" Margin="0,20,0,0" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="2" SelectionChanged="mainTabMenu_SelectionChanged">
+        <TabControl x:Name="mainTabMenu" HorizontalAlignment="Left" Height="461" Margin="0,20,-0.051,-0.03" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="3" SelectionChanged="mainTabMenu_SelectionChanged">
             <TabItem x:Name="av_adsTab" Header="av.ads" Margin="0" RenderTransformOrigin="-1.114,0.416" Visibility="Collapsed" IsEnabled="False">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
@@ -85,7 +89,7 @@
                     <PasswordBox x:Name="jetspeedPasswordTextBox2" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="av_bizTab" Header="av.biz" Margin="0" IsSelected="True">
+            <TabItem x:Name="av_bizTab" Header="av.biz" Margin="0">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -116,7 +120,8 @@
                     <PasswordBox x:Name="avDBPasswordTextBox_biz" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
                     <PasswordBox x:Name="jetspeedPasswordTextBox_biz" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                     <Button x:Name="changeDBConfigTypeButton" Content="Change DB Type" Grid.Column="1" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Visibility="Hidden"/>
-                    <CheckBox x:Name="avPassShowBiz" IsEnabled="False" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
+                    <CheckBox x:Name="avPassShowBiz" Content="Reveal Password" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked" Grid.Column="1"/>
+                    <CheckBox x:Name="applyToAll" IsEnabled="True" Checked="ApplyToAll" Content="Apply To All" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Width="100" IsChecked="True" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="av_cfmxTab" Header="av.cfmx" Margin="0">
@@ -146,37 +151,31 @@
                     <CheckBox x:Name="avPassShowCfmx" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" Visibility="Hidden" IsEnabled="False" Height="0" Width="0">
+            <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" IsEnabled="True" IsSelected="True">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="197*"/>
-                        <RowDefinition Height="199*"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="commitButton4" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="369,97,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" Grid.Row="1"/>
-                    <TextBox x:Name="dbServerTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
+                    <TextBox x:Name="dbServer_indexer" HorizontalAlignment="Left" Height="26" Margin="97,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="430" FontSize="14" Grid.Column="1"/>
                     <Label Content="DB Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="86" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <TextBox x:Name="avDBTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <TextBox x:Name="avDBTextBox_indexer" HorizontalAlignment="Left" Height="26" Margin="97,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
                     <Label x:Name="avdbLabel4" Content="AV DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,120,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <TextBox x:Name="avDBUserTextBox4" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
+                    <TextBox x:Name="avDBUserTextBox_indexer" HorizontalAlignment="Left" Height="26" Margin="97,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
                     <Label Content="AV User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,151,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
                     <Label Content="AV Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,182,0,0" Width="92" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <TextBox x:Name="jetspeedDBTextBox4" HorizontalAlignment="Left" Height="26" Margin="407,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
-                    <Label Content="Jetspeed DB" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,122,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <ComboBox x:Name="instancesComboBox4" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
+                    <ComboBox x:Name="instancesComboBox_indexer" HorizontalAlignment="Left" Margin="287,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectedInstanceChanged" Grid.Column="1" Height="22"/>
                     <Label x:Name="selectInstanceLabel4" Content="Select Instance" HorizontalAlignment="Left" Margin="287,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <TextBox x:Name="jetspeedUserTextBox4" HorizontalAlignment="Left" Height="26" Margin="407,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" Grid.Column="1"/>
-                    <Label x:Name="jetspeedUserLabel4" Content="Jetspeed User" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,153,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <Label x:Name="jetspeedPassLabel4" Content="Jetspeed Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,184,0,0" Width="132" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <Button x:Name="loadConfigButton4" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="369,52,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Grid.Row="1"/>
-                    <ComboBox x:Name="versionsComboBox4" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
+                    <ComboBox x:Name="versionsComboBox_indexer" HorizontalAlignment="Left" Margin="97,49,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="PopulateInstanceComboBox" Grid.Column="1" Height="22"/>
                     <Label x:Name="selectVersionLabe4" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
-                    <TextBox x:Name="logBox4" HorizontalAlignment="Left" Height="143" Margin="4,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="343" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1"/>
-                    <PasswordBox x:Name="avDBPasswordTextBox4" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
-                    <PasswordBox x:Name="jetspeedPasswordTextBox4" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                    <PasswordBox x:Name="avDBPasswordTextBox_indexer" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
+                    <Button x:Name="commitButton_indexer" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="427,357,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" IsEnabled="False"/>
+                    <TextBox x:Name="logBox_indexer" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1"/>
+                    <Button x:Name="loadConfigButton_indexer" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="427,245,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" IsEnabled="False"/>
+                    <CheckBox x:Name="avPassShow_indexer" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="av_webTab" Header="av.web" Margin="0" IsSelected="False">
