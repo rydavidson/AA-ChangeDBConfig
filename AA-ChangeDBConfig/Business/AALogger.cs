@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using rydavidson.Accela.Common;
 using System.Windows;
 using AA_ChangeDBConfig.Views;
@@ -8,22 +7,19 @@ namespace AA_ChangeDBConfig.Business
 {
     public class AaLogger : Logger
     {
-        private GlobalConfigs config;
-
         public AaLogger(string _logFile)
         {
-            config = GlobalConfigs.Instance;
+            GlobalConfigs config = GlobalConfigs.Instance;
             LogFile = _logFile;
-            IsDebug = true;
-            IsVerbose = true;
+            IsDebug = config.IsLogDebugEnabled;
+            IsVerbose = config.IsLogTraceEnabled;
         }
 
         public void LogToUi(string _message, string _box)
-        {            
-            lb.AppendLine(_message);
-            MainWindow main = Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
-            if (main is null)
+        {          
+            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
                 return;
+            lb.AppendLine(_message);
             switch (_box)
             {
                 case "av.biz":
@@ -48,10 +44,9 @@ namespace AA_ChangeDBConfig.Business
 
         public void LogToUi(string _message)
         {
-            lb.AppendLine(_message);
-            MainWindow main = Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
-            if (main is null)
+            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
                 return;
+            lb.AppendLine(_message);
             main.logBox_biz.Text += lb.ToString();
             main.logBox_cfmx.Text += lb.ToString();
             main.logBox_web.Text += lb.ToString();

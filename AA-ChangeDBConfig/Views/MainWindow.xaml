@@ -23,7 +23,7 @@
             </MenuItem>
         </Menu>
         <TabControl x:Name="mainTabMenu" HorizontalAlignment="Left" Height="461" Margin="0,20,-0.051,-0.03" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="3" SelectionChanged="mainTabMenu_SelectionChanged">
-            <TabItem x:Name="av_adsTab" Header="av.ads" Margin="0" RenderTransformOrigin="-1.114,0.416" Visibility="Collapsed" IsEnabled="False">
+            <TabItem x:Name="av_adsTab" Header="av.ads" Margin="0" RenderTransformOrigin="-1.114,0.416" Visibility="Visible" IsEnabled="True">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="197*"/>
@@ -56,7 +56,7 @@
                     <PasswordBox x:Name="jetspeedPasswordTextBox3" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="av_arwTab" Header="av.arw" Margin="0" Visibility="Hidden" IsEnabled="False" Height="0" Width="0">
+            <TabItem x:Name="av_arwTab" Header="av.arw" Margin="0" Visibility="Visible" IsEnabled="True" Height="0" Width="0">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="197*"/>
@@ -89,7 +89,7 @@
                     <PasswordBox x:Name="jetspeedPasswordTextBox2" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="av_bizTab" Header="av.biz" Margin="0">
+            <TabItem x:Name="av_bizTab" Header="av.biz" Margin="0" IsSelected="True">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -121,7 +121,7 @@
                     <PasswordBox x:Name="jetspeedPasswordTextBox_biz" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                     <Button x:Name="changeDBConfigTypeButton" Content="Change DB Type" Grid.Column="1" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Visibility="Hidden"/>
                     <CheckBox x:Name="avPassShowBiz" Content="Reveal Password" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked" Grid.Column="1"/>
-                    <CheckBox x:Name="applyToAll" IsEnabled="True" Checked="ApplyToAll" Content="Apply To All" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Width="100" IsChecked="True" Grid.Column="1"/>
+                    <CheckBox x:Name="applyToAll" Unchecked= "ApplyToAll_Checked" Checked="ApplyToAll_Checked" IsEnabled="True" Content="Apply To All" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Width="100" IsChecked="True" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="av_cfmxTab" Header="av.cfmx" Margin="0">
@@ -151,7 +151,7 @@
                     <CheckBox x:Name="avPassShowCfmx" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" IsEnabled="True" IsSelected="True">
+            <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" IsEnabled="True">
                 <Grid Background="#FFE5E5E5" Height="436" VerticalAlignment="Top" Margin="0,-1,-3,-2" HorizontalAlignment="Right" Width="541">
                     <Grid.RowDefinitions>
                         <RowDefinition/>

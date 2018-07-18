@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using AA_ChangeDBConfig.Business;
 using Microsoft.Win32;
-using rydavidson.Accela.Common;
 using rydavidson.Accela.Configuration.Common;
 using rydavidson.Accela.Configuration.Handlers;
 using rydavidson.Accela.Configuration.IO;
@@ -19,6 +15,7 @@ using rydavidson.Accela.Configuration.Models;
 
 namespace AA_ChangeDBConfig.Views
 {
+    /// <inheritdoc cref="System.Windows.Window" />
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -28,8 +25,9 @@ namespace AA_ChangeDBConfig.Views
         private AaUtil aautil;
         private readonly Dictionary<string, string> instancesWithVersions = new Dictionary<string, string>();
         private string loadedConfig = "";
-        private Dictionary<string, MssqlConfig> loadedConfigs = new Dictionary<string, MssqlConfig>();
-        DebugConsole debug;
+        private readonly Dictionary<string, MssqlConfig> loadedConfigs = new Dictionary<string, MssqlConfig>();
+        private readonly DebugConsole debug;
+        private bool hasLoaded = false;
 
         private TabItem currentTab = new TabItem();
 
@@ -44,13 +42,31 @@ namespace AA_ChangeDBConfig.Views
         {
             // Debug.WriteLine("Running from " + Environment.CurrentDirectory);
 
+            // hide all the tabs at first
+            av_adsTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
+            av_arwTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
+            av_bizTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
+            av_cfmxTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
+            av_indexerTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
+            av_webTab.IsEnabled = false;
+            av_adsTab.Visibility = Visibility.Collapsed;
+
             logger = new AaLogger("UI.log");
             aautil = new AaUtil(logger);
+
             GlobalConfigs.Instance.IsLogDebugEnabled = true;
             GlobalConfigs.Instance.IsLogTraceEnabled = true;
 
-            //av_webTab.Visibility = Visibility.Collapsed;
-            currentTab = av_bizTab;
             try
             {
                 foreach (string version in aautil.GetAaVersions())
@@ -58,11 +74,40 @@ namespace AA_ChangeDBConfig.Views
                     versionsComboBox_biz.Items.Add(version);
                     versionsComboBox_cfmx.Items.Add(version);
                     versionsComboBox_web.Items.Add(version);
+                    versionsComboBox_indexer.Items.Add(version);
                     try
                     {
                         foreach (string instance in aautil.GetInstancesForVersion(version))
                         {
                             instancesWithVersions.Add(instance, version);
+                            foreach (string comp in aautil.GetAaInstalledComponents(version, instance))
+                            {
+                                switch (comp.Trim())
+                                {
+                                    case "av.ads":
+                                        logger.Debug("av.ads is installed but will not be enabled");
+                                        break;
+                                    case "av.arw":
+                                        logger.Debug("av.arw is installed but will not be enabled");
+                                        break;
+                                    case "av.biz":
+                                        av_bizTab.IsEnabled = true;
+                                        break;
+                                    case "av.cfmx":
+                                        av_cfmxTab.IsEnabled = true;
+                                        break;
+                                    case "av.indexer":
+                                        av_indexerTab.IsEnabled = true;
+                                        break;
+                                    case "av.web":
+                                        av_webTab.IsEnabled = true;
+                                        break;
+                                    default:
+                                        av_bizTab.IsEnabled = true;
+                                        logger.Debug(comp);
+                                        break;
+                                }
+                            }
                         }
                     }
                     catch (Exception ey)
@@ -85,6 +130,15 @@ namespace AA_ChangeDBConfig.Views
                 message.Append(ex.StackTrace);
                 logger.Error(message.ToString());
             }
+
+            if (!av_bizTab.IsEnabled)
+            {
+                MessageBox.Show("A biz server could not be detected among the installed components. A biz server is required.","No Biz Server Found!");
+                Exit(null,null);
+            }
+            currentTab = av_bizTab.IsEnabled ? av_bizTab : mainTabMenu.Items[0] as TabItem;
+            hasLoaded = true;
+            ApplyToAll_Checked(null,null);
         }
 
         private IEnumerable<string> LookupInstancesForVersion(string _version)
@@ -106,30 +160,33 @@ namespace AA_ChangeDBConfig.Views
         {
             string selectedVersion = "";
 
-            if (_e.OriginalSource == versionsComboBox_biz)
+            if (Equals(_e.OriginalSource, versionsComboBox_biz))
                 selectedVersion = versionsComboBox_biz.SelectedValue.ToString();
-            if (_e.OriginalSource == versionsComboBox_cfmx)
+            if (Equals(_e.OriginalSource, versionsComboBox_cfmx))
                 selectedVersion = versionsComboBox_cfmx.SelectedValue.ToString();
-            if (_e.OriginalSource == versionsComboBox_web)
+            if (Equals(_e.OriginalSource, versionsComboBox_indexer))
+                selectedVersion = versionsComboBox_cfmx.SelectedValue.ToString();
+            if (Equals(_e.OriginalSource, versionsComboBox_web))
                 selectedVersion = versionsComboBox_web.SelectedValue.ToString();
 
             GlobalConfigs.Instance.AaVersion = selectedVersion;
 
-            if (selectedVersion != "")
+            if (selectedVersion == "") return;
+            
+            foreach (string instance in LookupInstancesForVersion(selectedVersion))
             {
-                foreach (string instance in LookupInstancesForVersion(selectedVersion))
-                {
-                    if (!instancesComboBox_biz.Items.Contains(instance))
-                        instancesComboBox_biz.Items.Add(instance);
-                    if (!instancesComboBox_cfmx.Items.Contains(instance))
-                        instancesComboBox_cfmx.Items.Add(instance);
-                    if (!instancesComboBox_web.Items.Contains(instance))
-                        instancesComboBox_web.Items.Add(instance);
-                }
+                if (!instancesComboBox_biz.Items.Contains(instance))
+                    instancesComboBox_biz.Items.Add(instance);
+                if (!instancesComboBox_cfmx.Items.Contains(instance))
+                    instancesComboBox_cfmx.Items.Add(instance);
+                if (!instancesComboBox_indexer.Items.Contains(instance))
+                    instancesComboBox_indexer.Items.Add(instance);
+                if (!instancesComboBox_web.Items.Contains(instance))
+                    instancesComboBox_web.Items.Add(instance);
             }
         }
 
-        public void RunDebugCommand(string _command, Action<string> resultAction)
+        public void RunDebugCommand(string _command, Action<string> _resultAction)
         {
             StringBuilder sb = new StringBuilder();
             switch (_command)
@@ -180,7 +237,7 @@ namespace AA_ChangeDBConfig.Views
                     break;
             }
 
-            resultAction(sb.ToString());
+            _resultAction(sb.ToString());
             sb.Clear();
         }
 
@@ -198,10 +255,8 @@ namespace AA_ChangeDBConfig.Views
                 logger.Debug("Null header on currentTab");
                 return;
             }
-            else
-            {
-                logger.Debug("Loaded tab: " + currentTab.Header.ToString());
-            }
+
+            logger.Debug("Loaded tab: " + currentTab.Header.ToString());
 
             if (loadedConfigs.ContainsKey(selectedComponent))
             {
@@ -235,27 +290,19 @@ namespace AA_ChangeDBConfig.Views
             }
             else
             {
-                OpenFileDialog getPropFile = new OpenFileDialog();
-                getPropFile.InitialDirectory = configDir;
-                getPropFile.Filter = "Properties files (*.properties)|*.properties";
-
-                if (getPropFile.ShowDialog() == true)
+                OpenFileDialog getPropFile = new OpenFileDialog
                 {
-                    loadedConfig = getPropFile.FileName;
-                    MssqlConfig mssql = new ConfigReader(loadedConfig).ReadFromConfigFile();
-                    mssql.AvComponent = selectedComponent;
-                    loadedConfigs.Add(selectedComponent, mssql);
-                    UpdateUi(mssql);
-                }
+                    InitialDirectory = configDir,
+                    Filter = "Properties files (*.properties)|*.properties"
+                };
+
+                if (getPropFile.ShowDialog() != true) return;
+                loadedConfig = getPropFile.FileName;
+                MssqlConfig mssql = new ConfigReader(loadedConfig).ReadFromConfigFile();
+                mssql.AvComponent = selectedComponent;
+                loadedConfigs.Add(selectedComponent, mssql);
+                UpdateUi(mssql);
             }
-        }
-
-        private void LoadConfigs(List<string> _components)
-        {
-        }
-
-        private void ApplyToAll(object _sender, RoutedEventArgs _e)
-        {
         }
 
         private void WriteConfigToFile(object _sender, RoutedEventArgs _e)
@@ -330,31 +377,82 @@ namespace AA_ChangeDBConfig.Views
             }
             else
             {
-                foreach (KeyValuePair<string, MssqlConfig> configPair in loadedConfigs)
+                bool loadedSelectedComponent = false;
+
+                foreach (string comp in aautil.GetAaInstalledComponents(GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance))
                 {
-                    MssqlConfig mssql = configPair.Value;
+                    MssqlConfig mssql;
 
-                    ConfigHandler config = new ConfigHandler(loadedConfig, mssql.AvComponent, GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance, logger);
 
-                    mssql.AvDbHost = dbServerTextBox_biz.Text;
-
-                    // av db
-                    mssql.AvDbName = avDBTextBox_biz.Text;
-                    mssql.AvUser = avDBUserTextBox_biz.Text;
-                    mssql.SetAvDatabasePassword(avDBPasswordTextBox_biz.Password);
-
-                    if (mssql.AvComponent == "av.biz")
+                    if (loadedConfigs.ContainsKey(selectedComponent) && loadedSelectedComponent == false)
                     {
-                        // jetspeed db
-                        mssql.AvJetspeedDbName = jetspeedDBTextBox_biz.Text;
-                        mssql.AvJetspeedUser = jetspeedUserTextBox_biz.Text;
+                        mssql = loadedConfigs[selectedComponent];
+                        path = aautil.GetAaConfigFilePaths(GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance)[selectedComponent];
+                        ConfigHandler config = new ConfigHandler(path, comp, GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance, logger);
+                        mssql = new MssqlConfig
+                        {
+                            AvComponent = selectedComponent,
+                            AvDbHost = dbServerTextBox_biz.Text,
+                            AvDbName = avDBTextBox_biz.Text,
+                            AvUser = avDBUserTextBox_biz.Text,
+                            AvJetspeedDbName = jetspeedDBTextBox_biz.Text,
+                            AvJetspeedUser = jetspeedUserTextBox_biz.Text
+                        };
+                        mssql.SetAvDatabasePassword(avDBPasswordTextBox_biz.Password);
                         mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox_biz.SecurePassword);
+
+                        config.WriteConfigToFile(mssql);
+                        UpdateUi(mssql);
+                        loadedSelectedComponent = true;
                     }
+                    else
+                    {
+                        path = aautil.GetAaConfigFilePaths(GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance)[comp];
+                        ConfigHandler config = new ConfigHandler(path, comp, GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance, logger);
+                        mssql = new MssqlConfig {AvComponent = comp, AvDbHost = dbServerTextBox_biz.Text, AvDbName = avDBTextBox_biz.Text, AvUser = avDBUserTextBox_biz.Text};
+                        mssql.SetAvDatabasePassword(avDBPasswordTextBox_biz.Password);
 
-                    config.WriteConfigToFile(mssql);
+                        if (mssql.AvComponent == "av.biz")
+                        {
+                            // jetspeed db
+                            mssql.AvJetspeedDbName = jetspeedDBTextBox_biz.Text;
+                            mssql.AvJetspeedUser = jetspeedUserTextBox_biz.Text;
+                            mssql.SetJetspeedDatabasePassword(jetspeedPasswordTextBox_biz.SecurePassword);
+                        }
 
-                    UpdateUi(mssql);
+                        config.WriteConfigToFile(mssql);
+                        UpdateUi(mssql);
+                    }
                 }
+            }
+        }
+
+        private void ApplyToAll_Checked(object _sender, RoutedEventArgs _e)
+        {
+            if (!hasLoaded)
+                return;
+            
+            try
+            {
+                if (applyToAll.IsChecked == true)
+                {
+                    av_adsTab.IsEnabled = false;
+                    av_arwTab.IsEnabled = false;
+                    av_cfmxTab.IsEnabled = false;
+                    av_indexerTab.IsEnabled = false;
+                    av_webTab.IsEnabled = false;
+
+                }
+                else
+                {
+                    av_cfmxTab.IsEnabled = true;
+                    av_indexerTab.IsEnabled = true;
+                    av_webTab.IsEnabled = true;
+                }
+            }
+            catch (Exception e)
+            {
+                logger.Error(e.Message + e.StackTrace);
             }
         }
 
@@ -412,11 +510,18 @@ namespace AA_ChangeDBConfig.Views
                 loadConfigButton_web.IsEnabled = true;
             }
         }
-
+        
+        private void Exit(object _sender, RoutedEventArgs _e, int _exitCode)
+        {
+            Environment.Exit(_exitCode);
+        }
+        
         private void Exit(object _sender, RoutedEventArgs _e)
         {
-            Environment.Exit(0);
+            Exit(_sender, _e, 0);
         }
+
+
 
         private void mainTabMenu_SelectionChanged(object _sender, SelectionChangedEventArgs _e)
         {
@@ -447,8 +552,7 @@ namespace AA_ChangeDBConfig.Views
 
         private void Window_Closing(object _sender, CancelEventArgs _e)
         {
-            if (debug.IsVisible)
-                debug.Close();
+            debug.Close();
         }
     }
 }
