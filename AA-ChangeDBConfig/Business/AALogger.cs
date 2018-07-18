@@ -7,31 +7,35 @@ namespace AA_ChangeDBConfig.Business
 {
     public class AaLogger : Logger
     {
-        private GlobalConfigs config = GlobalConfigs.Instance;
-
         public AaLogger(string _logFile)
         {
+            GlobalConfigs config = GlobalConfigs.Instance;
             LogFile = _logFile;
-            IsDebug = GlobalConfigs.Instance.IsLogDebugEnabled;
-            IsVerbose = GlobalConfigs.Instance.IsLogTraceEnabled;
+            IsDebug = config.IsLogDebugEnabled;
+            IsVerbose = config.IsLogTraceEnabled;
         }
 
         public void LogToUi(string _message, string _box)
-        {            
+        {          
+            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
+                return;
             lb.AppendLine(_message);
-            MainWindow main = Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
             switch (_box)
             {
-                case "logBox_biz":
+                case "av.biz":
                     main.logBox_biz.Text += lb.ToString();
                     break;
-                case "logBox_cfmx":
+                case "av.cfmx":
                     main.logBox_cfmx.Text += lb.ToString();
                     break;
-                case "logBox_web":
+                case "av.web":
                     main.logBox_web.Text += lb.ToString();
                     break;
+                case"av.indexer":
+                    main.logBox_indexer.Text += lb.ToString();
+                    break;
                 default:
+                    Warn("Couldn't locate a log box to log to. Message: " + _message);
                     break;
             }
 
@@ -40,8 +44,9 @@ namespace AA_ChangeDBConfig.Business
 
         public void LogToUi(string _message)
         {
+            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
+                return;
             lb.AppendLine(_message);
-            MainWindow main = Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) as MainWindow; // get the main window so I can log to the logBox
             main.logBox_biz.Text += lb.ToString();
             main.logBox_cfmx.Text += lb.ToString();
             main.logBox_web.Text += lb.ToString();

@@ -1,0 +1,15 @@
+﻿<Window x:Class="AA_ChangeDBConfig.Views.DebugConsole"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AA_ChangeDBConfig.Views"
+        mc:Ignorable="d"
+        Title="DebugConsole" Height="450" Width="800">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+        <TextBox HorizontalAlignment="Left" Height="310.073" Margin="0,108.927,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" x:Name="debugConsoleBox" Background="#FFF1F1F1" IsReadOnly="True"/>
+        <TextBox x:Name="commandBox" HorizontalAlignment="Left" Height="23" Margin="0,63.421,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" KeyUp="RunCommand" />
+        <Label x:Name="commandLabel" Content="Enter command" HorizontalAlignment="Left" Margin="10,32.461,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
