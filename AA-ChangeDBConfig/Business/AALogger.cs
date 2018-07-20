@@ -17,11 +17,6 @@ namespace AA_ChangeDBConfig.Business
             LogFile = _logFile;
             IsDebug = true;
             IsVerbose = true;
-
-#if DEBUG
-#else
-isEnabled = false;
-#endif
         }
 
         public void LogToUi(string _message)

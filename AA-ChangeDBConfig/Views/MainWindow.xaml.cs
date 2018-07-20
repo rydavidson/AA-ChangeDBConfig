@@ -9,10 +9,14 @@ using System.Windows.Controls;
 using AA_ChangeDBConfig.Business;
 using log4net;
 using Microsoft.Win32;
+using NetSparkle;
+using NetSparkle.Enums;
 using rydavidson.Accela.Configuration.Common;
 using rydavidson.Accela.Configuration.Handlers;
 using rydavidson.Accela.Configuration.IO;
 using rydavidson.Accela.Configuration.Models;
+using System.Drawing;
+using System.Reflection;
 
 namespace AA_ChangeDBConfig.Views
 {
@@ -31,6 +35,11 @@ namespace AA_ChangeDBConfig.Views
         private AaLogger uiLogger = new AaLogger();
         private bool hasLoaded;
 
+        //private Icon icon = new Icon("");
+
+
+        private Sparkle sparkle;
+
         private static readonly ILog logger
             = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -39,14 +48,25 @@ namespace AA_ChangeDBConfig.Views
         public MainWindow()
         {
             InitializeComponent();
+            sparkle = new Sparkle(
+                "https://rydavidson.github.io/meta/Accela/AAChangeDBConfig/appcast.xml",
+                GetWindowIcon(),
+                SecurityMode.Strict
+            );
             Loaded += RunOnLoad;
             debug = new DebugConsole(this);
             //log4net.Config.XmlConfigurator.Configure();
             logger.Info("Application startup");
         }
+        
+        public Icon GetWindowIcon()
+        {
+            return System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+        }
 
         private void RunOnLoad(object _sender, RoutedEventArgs _e)
         {
+            sparkle.CheckOnFirstApplicationIdle();
             // Debug.WriteLine("Running from " + Environment.CurrentDirectory);
 
             // hide all the tabs at first except biz
@@ -153,7 +173,7 @@ namespace AA_ChangeDBConfig.Views
 
             av_webTab.IsEnabled = false;
             av_adsTab.Visibility = Visibility.Collapsed;
-                
+
             foreach (string comp in aautil.GetAaInstalledComponents(_version, _instance))
             {
                 switch (comp.Trim())
@@ -182,6 +202,7 @@ namespace AA_ChangeDBConfig.Views
                         break;
                 }
             }
+
             ApplyToAll_Checked(null, null);
         }
 
@@ -580,14 +601,14 @@ namespace AA_ChangeDBConfig.Views
         {
             if (!(_e.OriginalSource is ComboBox clickedBox))
                 return;
-            
+
             ComboBox box = (ComboBox) _e.OriginalSource;
 
 
             if (box.SelectedValue is null)
                 return;
-            
-            if (Equals(box, instancesComboBox_biz) )
+
+            if (Equals(box, instancesComboBox_biz))
             {
                 GlobalConfigs.Instance.AaInstance = box.SelectedValue.ToString();
                 loadConfigButton_biz.IsEnabled = true;
@@ -610,7 +631,7 @@ namespace AA_ChangeDBConfig.Views
                 GlobalConfigs.Instance.AaInstance = box.SelectedValue.ToString();
                 loadConfigButton_web.IsEnabled = true;
             }
-            
+
             EnableOrDisableTabs(GlobalConfigs.Instance.AaVersion, GlobalConfigs.Instance.AaInstance);
         }
 
@@ -693,8 +714,8 @@ namespace AA_ChangeDBConfig.Views
                     return;
 
                 selectedVersion = clickedBox.SelectedValue.ToString();
-                
-                if (string.IsNullOrWhiteSpace(selectedVersion)) 
+
+                if (string.IsNullOrWhiteSpace(selectedVersion))
                     return;
 
                 if (Equals(_e.OriginalSource, versionsComboBox_biz))
