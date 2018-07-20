@@ -3,3 +3,5 @@
 .log
 .vs
 .git
+.idea\*
+\packages

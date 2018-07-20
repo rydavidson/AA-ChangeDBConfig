@@ -1,9 +1,12 @@
-﻿<Application x:Class="AA_ChangeDBConfig.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AA_ChangeDBConfig"
-             StartupUri="Views\MainWindow.xaml">
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="AA_ChangeDBConfig.Views.App"
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <System:Boolean x:Key="commandEnter">True</System:Boolean>
+
     </Application.Resources>
 </Application>
