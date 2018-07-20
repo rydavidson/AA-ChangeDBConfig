@@ -120,7 +120,7 @@
                     <PasswordBox x:Name="avDBPasswordTextBox_biz" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
                     <PasswordBox x:Name="jetspeedPasswordTextBox_biz" Grid.Column="1" HorizontalAlignment="Left" Margin="407,184,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
                     <Button x:Name="changeDBConfigTypeButton" Content="Change DB Type" Grid.Column="1" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" Visibility="Hidden"/>
-                    <CheckBox x:Name="avPassShowBiz" Content="Reveal Password" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked" Grid.Column="1"/>
+                    <CheckBox x:Name="avPassShowBiz" Content="Reveal Password" Visibility="Hidden" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked" Grid.Column="1"/>
                     <CheckBox x:Name="applyToAll" Unchecked= "ApplyToAll_Checked" Checked="ApplyToAll_Checked" IsEnabled="True" Content="Apply To All" HorizontalAlignment="Left" Margin="427,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Width="100" IsChecked="True" Grid.Column="1"/>
                 </Grid>
             </TabItem>
@@ -148,7 +148,7 @@
                     <Label x:Name="selectVersionLabe1" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="1" Height="26"/>
                     <TextBox x:Name="logBox_cfmx" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1"/>
                     <PasswordBox x:Name="avDBPasswordTextBox_cfmx" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.Column="1"/>
-                    <CheckBox x:Name="avPassShowCfmx" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
+                    <CheckBox x:Name="avPassShowCfmx" Content="Reveal Password" Visibility="Hidden" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="av_indexerTab" Header="av.indexer" Margin="0" IsEnabled="True">
@@ -175,7 +175,7 @@
                     <Button x:Name="commitButton_indexer" Content="Commit Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="427,357,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="WriteConfigToFile" IsEnabled="False"/>
                     <TextBox x:Name="logBox_indexer" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Column="1"/>
                     <Button x:Name="loadConfigButton_indexer" Content="Load Config" Grid.Column="1" HorizontalAlignment="Left" Margin="427,245,0,0" VerticalAlignment="Top" Width="100" Height="40" MinHeight="40" MinWidth="100" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Click="LoadConfig" IsEnabled="False"/>
-                    <CheckBox x:Name="avPassShow_indexer" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
+                    <CheckBox x:Name="avPassShow_indexer" Content="Reveal Password" Visibility="Hidden" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="av_webTab" Header="av.web" Margin="0" IsSelected="False">
@@ -202,7 +202,7 @@
                     <Label x:Name="selectVersionLabe5" Content="Select Version" HorizontalAlignment="Left" Margin="97,23,0,0" Width="120" VerticalAlignment="Top" HorizontalContentAlignment="Center" Height="26" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="logBox_web" HorizontalAlignment="Left" Height="152" Margin="10,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2"/>
                     <PasswordBox x:Name="avDBPasswordTextBox_web" HorizontalAlignment="Left" Margin="97,184,0,0" VerticalAlignment="Top" Width="120" Height="26" Grid.ColumnSpan="2"/>
-                    <CheckBox x:Name="avPassShowWeb" Content="Reveal Password" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
+                    <CheckBox x:Name="avPassShowWeb" Content="Reveal Password" Grid.ColumnSpan="2" Visibility="Hidden" HorizontalAlignment="Left" Margin="97,215,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.157,-2.326" Checked="avPassShow_Checked"/>
                 </Grid>
             </TabItem>
         </TabControl>

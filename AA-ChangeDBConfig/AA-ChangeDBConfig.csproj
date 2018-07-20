@@ -34,6 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
+      <HintPath>packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetSparkle, Version=0.15.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>packages\NetSparkle.New.0.15.0\lib\net45\NetSparkle.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="rydavidson.Accela.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\AccelaLib\Common\bin\Debug\rydavidson.Accela.Common.dll</HintPath>
     </Reference>
@@ -100,6 +108,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +126,11 @@
       <Project>{4c3cab0a-5280-4571-85b4-ab9464c2bb49}</Project>
       <Name>Configuration</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,16 +7,36 @@ namespace AA_ChangeDBConfig.Business
 {
     public class AaLogger : Logger
     {
+
+        public AaLogger()
+        {
+            IsEnabled = false;
+        }
         public AaLogger(string _logFile)
         {
-            GlobalConfigs config = GlobalConfigs.Instance;
             LogFile = _logFile;
-            IsDebug = config.IsLogDebugEnabled;
-            IsVerbose = config.IsLogTraceEnabled;
+            IsDebug = true;
+            IsVerbose = true;
+
+#if DEBUG
+#else
+isEnabled = false;
+#endif
+        }
+
+        public void LogToUi(string _message)
+        {
+            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
+                return;
+            lb.AppendLine(_message);
+            main.logBox_biz.Text += lb.ToString();
+            main.logBox_cfmx.Text += lb.ToString();
+            main.logBox_web.Text += lb.ToString();
+            lb.Clear();
         }
 
         public void LogToUi(string _message, string _box)
-        {          
+        {
             if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
                 return;
             lb.AppendLine(_message);
@@ -31,25 +51,15 @@ namespace AA_ChangeDBConfig.Business
                 case "av.web":
                     main.logBox_web.Text += lb.ToString();
                     break;
-                case"av.indexer":
+                case "av.indexer":
                     main.logBox_indexer.Text += lb.ToString();
                     break;
                 default:
+                    lb.Clear(); //clear the base lb
                     Warn("Couldn't locate a log box to log to. Message: " + _message);
                     break;
             }
 
-            lb.Clear();
-        }
-
-        public void LogToUi(string _message)
-        {
-            if (!(Application.Current.Windows.Cast<Window>().FirstOrDefault(_windows => _windows is MainWindow) is MainWindow main))
-                return;
-            lb.AppendLine(_message);
-            main.logBox_biz.Text += lb.ToString();
-            main.logBox_cfmx.Text += lb.ToString();
-            main.logBox_web.Text += lb.ToString();
             lb.Clear();
         }
     }
