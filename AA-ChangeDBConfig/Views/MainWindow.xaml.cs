@@ -20,10 +20,6 @@ using System.Reflection;
 
 namespace AA_ChangeDBConfig.Views
 {
-    /// <inheritdoc cref="System.Windows.Window" />
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow
     {
         // private AaLogger logger;
@@ -34,9 +30,6 @@ namespace AA_ChangeDBConfig.Views
         private readonly DebugConsole debug;
         private AaLogger uiLogger = new AaLogger();
         private bool hasLoaded;
-
-        //private Icon icon = new Icon("");
-
 
         private Sparkle sparkle;
 
@@ -67,7 +60,6 @@ namespace AA_ChangeDBConfig.Views
         private void RunOnLoad(object _sender, RoutedEventArgs _e)
         {
             sparkle.CheckOnFirstApplicationIdle();
-            // Debug.WriteLine("Running from " + Environment.CurrentDirectory);
 
             // hide all the tabs at first except biz
             av_adsTab.IsEnabled = false;
