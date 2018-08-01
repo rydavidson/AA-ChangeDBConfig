@@ -117,8 +117,8 @@ namespace AA_ChangeDBConfig.Views
                     catch (Exception ey)
                     {
                         StringBuilder message = new StringBuilder();
-                        message.AppendLine("Unable to detect installed AA instances for version: " + version);
-                        uiLogger.LogToUi(message.ToString());
+                        message.AppendLine("Error occured detecting installed instances for version: " + version);
+                       // uiLogger.LogToUi(message.ToString());
                         message.AppendLine(ey.Message);
                         message.Append(ey.StackTrace);
                         logger.Error(message.ToString());

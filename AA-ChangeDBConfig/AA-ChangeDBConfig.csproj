@@ -71,14 +71,16 @@
       <HintPath>packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NetSparkle, Version=0.15.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\NetSparkle.New.0.15.0\lib\net45\NetSparkle.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NetSparkle, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\NetSparkle.dll</HintPath>
     </Reference>
-    <Reference Include="rydavidson.Accela.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\AccelaLib\Common\bin\Debug\rydavidson.Accela.Common.dll</HintPath>
+    <Reference Include="rydavidson.Accela.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\AccelaLib\Configuration\bin\Debug\rydavidson.Accela.Common.dll</HintPath>
     </Reference>
-    <Reference Include="rydavidson.Accela.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="rydavidson.Accela.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\AccelaLib\Configuration\bin\Debug\rydavidson.Accela.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -152,16 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AccelaLib\Common\Common.csproj">
-      <Project>{beba0c98-a578-465a-b877-19d80a32abe1}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AccelaLib\Configuration\Configuration.csproj">
-      <Project>{4c3cab0a-5280-4571-85b4-ab9464c2bb49}</Project>
-      <Name>Configuration</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config">
